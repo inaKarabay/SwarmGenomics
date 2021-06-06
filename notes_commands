@@ -1,0 +1,135 @@
+REFERENCE:
+assembly:
+	https://www.ncbi.nlm.nih.gov/assembly/GCA_004363605.1/
+GCA...
+	https://www.ncbi.nlm.nih.gov/genome?LinkName=nuccore_genome&from_uid=1596357218
+https://www.ncbi.nlm.nih.gov/nuccore/RJWJ000000000.1?report=gbwithparts&log$=seqview
+
+Indri indri isolate BS62
+Genome Coverage        :: 34.4x
+female
+Total sequence length	2,701,849,413
+Total ungapped length	2,701,360,913
+Gaps between scaffolds	0
+Number of scaffolds	1,243,540
+Scaffold N50	28,620
+Scaffold L50	20,823
+Number of contigs	1,248,425
+Contig N50	26,447
+Contig L50	23,601
+Total number of chromosomes and plasmids	0
+Number of component sequences (WGS or clone)	1,243,540
+---------------------------------------------------------------------
+SRA: https://www.ncbi.nlm.nih.gov/sra/SRX8008840[accn]
+info individual: https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP254212&o=acc_s%3Aa
+download:  sudo wget  https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos3/sra-pub-run-21/SRR11430608/SRR11430608.1 -P /vol/storage/indri/
+
+Run SRR11430608
+BS62 library for Discovar de novo assembly
+BioSample: SAMN07678091
+Illumina
+GC 41.7%
+79.4 Gbp
+female
+
+_--------------------------------------------------------------
+download
+	sudo wget  https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos3/sra-pub-run-21/SRR11430608/SRR11430608.1 -P /vol/storage/indri/
+_--------------------------------------------------------------
+convert to fastq
+	fastq-dump --gzip --split-files [SRA file]
+Multiple File Options              Setting these options will produce more
+                                     than 1 file, each of which will be suffixed
+                                     according to splitting criteria.
+  --split-files                    Dump each read into separate file.Files 
+                                   will receive suffix corresponding to read 
+                                   number 
+_--------------------------------------------------------------
+ 
+analyse with fastqc
+	fastqc
+Sequences flagged as poor quality	0
+Sequence length	500
+%GC	41
+_--------------------------------------------------------------
+gzip files
+_--------------------------------------------------------------
+trimmomatic
+https://datacarpentry.org/wrangling-genomics/03-trimming/index.html
+did not work
+	sudo trimmomatic PE SRR11430608.1_1.fastq.gz SRR11430608.1_2.fastq.gz SRR11430608.1_1.trim.fastq.gz SRR11430608.1_1un.trim.fastq.gz SRR11430608.1_2.trim.fastq.gz SRR11430608.1_2un.trim.fastq.gz SLIDINGWINDOW:4:20 MINLEN:25 ILLUMINACLIP:TruSeq3-SE:2:30:10
+then:
+	trimmomatic PE SRR11430608.1_1.fastq.gz SRR11430608.1_2.fastq.gz SRR11430608.1_1.trim.fastq.gz SRR11430608.1_1un.trim.fastq.gz SRR11430608.1_2.trim.fastq.gz SRR11430608.1_2un.trim.fastq.gz SLIDINGWINDOW:4:20 MINLEN:25 
+
+
+which trimmomatic
+/home/ubuntu/miniconda3/envs/denbi/bin/trimmomatic
+
+HOW TO FIND ADAPTER FILE?????
+
+Output:Input Read Pairs: 158882095 Both Surviving: 131588302 (82.82%) Forward Only Surviving: 15167831 (9.55%) Reverse Only Surviving: 4578814 (2.88%) Dropped: 7547148 (4.75%)
+_--------------------------------------------------------------
+Error for fastgc: cant open files (because of @)
+-----------------------------------------------------------------
+
+
+
+
+
+
+
+bwa
+bwa index -p bwa_index/index ncbi-genomes-2021-05-28/GCA_004363605.1_IndInd_v1_BIUU_genomic.fna.g
+	[bwt_gen] Finished constructing BWT in 608 iterations.
+	[bwa_index] 2172.60 seconds elapse.
+	[bwa_index] Update BWT... 11.11 sec
+	[bwa_index] Pack forward-only FASTA... 19.26 sec
+	[bwa_index] Construct SA from BWT and Occ... 1154.63 sec
+	[main] Version: 0.7.8-r455
+	[main] CMD: bwa index -p bwa_index/index ncbi-genomes-2021-05-28/GCA_004363605.1_IndInd_v1_BIUU_genomic.fna.gz
+	[main] Real time: 3404.233 sec; CPU: 3385.581 sec
+
+bwa mem bwa_index/index SRR11430608.1_1.trim.fastq.gz SRR11430608.1_2.trim.fastq.gz > SRR11430608.1_bwa.sam #2> SRR11430608.1_bwa.log
+	[M::main_mem] read 45778 sequences (10000366 bp)...
+	[M::mem_pestat] # candidate unique pairs for (FF, FR, RF, RR): (5, 17822, 0, 0)
+	[M::mem_pestat] skip orientation FF as there are not enough pairs
+	[M::mem_pestat] analyzing insert size distribution for orientation FR...
+	[M::mem_pestat] (25, 50, 75) percentile: (366, 423, 487)
+	[M::mem_pestat] low and high boundaries for computing mean and std.dev: (124, 729)
+	[M::mem_pestat] mean and std.dev: (428.49, 90.41)
+	[M::mem_pestat] low and high boundaries for proper pairs: (3, 850)
+	[M::mem_pestat] skip orientation RF as there are not enough pairs
+	[M::mem_pestat] skip orientation RR as there are not enough pairs
+	[M::mem_process_seqs] Processed 45778 reads in 29.587 CPU sec, 29.589 real sec
+	[M::main_mem] read 11348 sequences (2493202 bp)...
+	[M::mem_pestat] # candidate unique pairs for (FF, FR, RF, RR): (2, 4430, 0, 1)
+	[M::mem_pestat] skip orientation FF as there are not enough pairs
+	[M::mem_pestat] analyzing insert size distribution for orientation FR...
+	[M::mem_pestat] (25, 50, 75) percentile: (367, 423, 486)
+	[M::mem_pestat] low and high boundaries for computing mean and std.dev: (129, 724)
+	[M::mem_pestat] mean and std.dev: (429.58, 90.85)
+	[M::mem_pestat] low and high boundaries for proper pairs: (10, 843)
+	[M::mem_pestat] skip orientation RF as there are not enough pairs
+	[M::mem_pestat] skip orientation RR as there are not enough pairs
+	[M::mem_process_seqs] Processed 11348 reads in 7.359 CPU sec, 7.359 real sec
+	[M::main_mem] read 14 sequences (3167 bp)...
+	[M::mem_pestat] # candidate unique pairs for (FF, FR, RF, RR): (0, 0, 0, 0)
+	[M::mem_pestat] skip orientation FF as there are not enough pairs
+	[M::mem_pestat] skip orientation FR as there are not enough pairs
+	[M::mem_pestat] skip orientation RF as there are not enough pairs
+	[M::mem_pestat] skip orientation RR as there are not enough pairs
+	[mem_sam_pe] paired reads have different names: "SRR11430608.1.32104", "SRR11430608.1.32112"
+
+To Bam: http://quinlanlab.org/tutorials/samtools/samtools.html
+samtools view SRR11430608.1_bwa.sam > SRR11430608.1_bwa.bam
+
+samtools sort SRR11430608.1_bwa_new.bam  -o SRR11430608.1_bwa.sorted_new.bam
+missing SAM header
+
+
+
+	https://informatics.fas.harvard.edu/short-introduction-to-bwa.html
+	http://bio-bwa.sourceforge.net/bwa.shtml
+	burrow-wheeler-aligner
+	aligning sequencing reads against a large reference genom
+	components for <150bp and >150bp

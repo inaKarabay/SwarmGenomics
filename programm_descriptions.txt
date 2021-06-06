@@ -1,0 +1,68 @@
+sra toolkit
+	https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=toolkit_doc
+
+fastqc
+	quality checks
+	https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
+	Import of data from BAM, SAM or FastQ files (any variant)
+	Providing a quick overview to tell you in which areas there may be problems
+	Summary graphs and tables to quickly assess your data
+	Export of results to an HTML based permanent report
+	Offline operation to allow automated generation of reports without running the interactive application
+
+
+bwa
+	burrow-wheeler-aligner
+	aligning sequencing reads against a large reference genom
+	components for <150bp and >150bp
+
+samtools
+	Reading/writing/editing/indexing/viewing SAM/BAM/CRAM format
+	BCFtools: Reading/writing BCF2/VCF/gVCF files and calling/filtering/summarising SNP and short indel sequence variants
+
+emboss
+	https://www.bioinformatics.nl/emboss-explorer/
+	pairwise sequence alignment
+	sequence translation
+	sequence statistics
+	sequence format conversion
+
+bedtools
+	genome arithmetic
+	merge, count, complement, and shuffle genomic intervals from multiple files in many formats
+
+trimmomatic
+	http://www.usadellab.org/cms/?page=trimmomatic
+	read trimming
+	paired end or single end
+
+bcftools
+	variant calling and manipulating VCFs and BCFs
+
+vcftools
+	on VCF files
+	Filter out specific variants
+	Compare files
+	Summarize variants
+	Convert to different file types
+	Validate and merge files
+	Create intersections and subsets of variants
+
+
+
+FILE TRANSFER:
+https://cloud.denbi.de/wiki/Tutorials/File_Transfer_Methods/
+TO Server: sudo scp -i project/swarm/genome/denbi/ikarabay_ecdsa -P 30129 FILE ubuntu@129.70.51.6:FOLDER
+	
+
+NCBI sra
+sequence read archive -> Reads
+
+
+
+vcf-file;  format of a text file used in bioinformatics for storing gene sequence variations
+BAM file:  binary format for storing sequence data. 
+variant calling: determining the differences between a sequenced donor genome and a given (linear) reference genome. In case of diploid or polyploid organisms, we additionally want to determine the corresponding ‘genotype’
+	Variant calling entails identifying single nucleotide polymorphisms (SNPs) and small insertions and deletion (indels) from next generation sequencing data.
+structural variations = variation in structure of an organism's chromosome.
+	consists of many kinds of variation (region is 1 kb and larger in size )
