@@ -29,21 +29,51 @@ BS62 library for Discovar de novo assembly
 BioSample: SAMN07678091
 Illumina
 GC 41.7%
-79.4 Gbp
+79.4 Gbps
 female
 
 _--------------------------------------------------------------
 download
-	sudo wget  https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos3/sra-pub-run-21/SRR11430608/SRR11430608.1 -P /vol/storage/indri/
+sudo wget  https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos3/sra-pub-run-21/SRR11430608/SRR11430608.1 -P /vol/storage/indri/
+	-> file SRR11430608.1
+
+or: sudo wget  https://sra-pub-run-odp.s3.amazonaws.com/sra/SRR11430608/SRR11430608 -P /vol/storage/indri/
+	-> file SRR11430608
+	-> exactly same file
+
+or: /usr/bin/fastq-dump SRR11430608
+	-> file SRR11430608.fastq
+	-> downloads fastq file directly (and not sra)
+	-> did not finish
 _--------------------------------------------------------------
+convert to bam
+sam-dump SRR11430608.1 | samtools view -bS -> SRR11430608.1.bam
+	-> did not work
+_--------------------------------------------------------------
+convert to sam
+sam-dump --output-file SRR11430608.1.sam  SRR11430608.1
+	-> did not work
+_--------------------------------------------------------------
+
 convert to fastq
 	fastq-dump --gzip --split-files [SRA file]
 Multiple File Options              Setting these options will produce more
                                      than 1 file, each of which will be suffixed
                                      according to splitting criteria.
-  --split-files                    Dump each read into separate file.Files 
+  --split-files                    for paired end data
+				   Dump each read into separate file.Files 
                                    will receive suffix corresponding to read 
                                    number 
+
+NEW
+fastq-dump --gzip --split-3 SRR11430608
+=============================================================
+An error occurred during processing.
+A report was generated into the file '/home/ubuntu/ncbi_error_report.xml'.
+If the problem persists, you may consider sending the file
+to 'sra@ncbi.nlm.nih.gov' for assistance.
+=============================================================
+
 _--------------------------------------------------------------
  
 analyse with fastqc
@@ -56,10 +86,10 @@ gzip files
 _--------------------------------------------------------------
 trimmomatic
 https://datacarpentry.org/wrangling-genomics/03-trimming/index.html
-did not work
+did not work because clip not found
 	sudo trimmomatic PE SRR11430608.1_1.fastq.gz SRR11430608.1_2.fastq.gz SRR11430608.1_1.trim.fastq.gz SRR11430608.1_1un.trim.fastq.gz SRR11430608.1_2.trim.fastq.gz SRR11430608.1_2un.trim.fastq.gz SLIDINGWINDOW:4:20 MINLEN:25 ILLUMINACLIP:TruSeq3-SE:2:30:10
 then:
-	trimmomatic PE SRR11430608.1_1.fastq.gz SRR11430608.1_2.fastq.gz SRR11430608.1_1.trim.fastq.gz SRR11430608.1_1un.trim.fastq.gz SRR11430608.1_2.trim.fastq.gz SRR11430608.1_2un.trim.fastq.gz SLIDINGWINDOW:4:20 MINLEN:25 
+	     trimmomatic PE SRR11430608.1_1.fastq.gz SRR11430608.1_2.fastq.gz SRR11430608.1_1.trim.fastq.gz SRR11430608.1_1un.trim.fastq.gz SRR11430608.1_2.trim.fastq.gz SRR11430608.1_2un.trim.fastq.gz SLIDINGWINDOW:4:20 MINLEN:25 
 
 
 which trimmomatic
@@ -71,12 +101,6 @@ Output:Input Read Pairs: 158882095 Both Surviving: 131588302 (82.82%) Forward On
 _--------------------------------------------------------------
 Error for fastgc: cant open files (because of @)
 -----------------------------------------------------------------
-
-
-
-
-
-
 
 bwa
 bwa index -p bwa_index/index ncbi-genomes-2021-05-28/GCA_004363605.1_IndInd_v1_BIUU_genomic.fna.g
