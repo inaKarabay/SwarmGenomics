@@ -1,0 +1,28 @@
+_--------------------------------------------------------------
+direct fastq download
+usr/bin/fastq-dump SRR11430608
+	-> file SRR11430608.fastq
+	-> downloads fastq file directly (and not sra)
+	-> did not finish
+_--------------------------------------------------------------
+normal fastq-dump
+fastq-dump --gzip --split-files [SRA file]
+_--------------------------------------------------------------
+convert sra to bam
+sam-dump SRR11430608.1 | samtools view -bS -> SRR11430608.1.bam
+	-> did not work
+_--------------------------------------------------------------
+convert sra to sam
+sam-dump --output-file SRR11430608.1.sam  SRR11430608.1
+	-> did not work
+_--------------------------------------------------------------
+zip files
+gzip FILENAME
+_--------------------------------------------------------------
+trimmomatic
+sudo trimmomatic PE SRR11430608.1_1.fastq.gz SRR11430608.1_2.fastq.gz SRR11430608.1_1.trim.fastq.gz SRR11430608.1_1un.trim.fastq.gz SRR11430608.1_2.trim.fastq.gz SRR11430608.1_2un.trim.fastq.gz SLIDINGWINDOW:4:20 MINLEN:25 ILLUMINACLIP:TruSeq3-SE:2:30:10
+	did not work because clip not found -> use jar
+_--------------------------------------------------------------
+
+not needed (use samtools sort directly)
+	samtools view SRR11430608.1_bwa.sam > SRR11430608.1_bwa.bam

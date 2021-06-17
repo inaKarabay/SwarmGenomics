@@ -15,9 +15,13 @@ bwa
 	burrow-wheeler-aligner
 	aligning sequencing reads against a large reference genom
 	components for <150bp and >150bp
+	https://informatics.fas.harvard.edu/short-introduction-to-bwa.html
+	http://bio-bwa.sourceforge.net/bwa.shtml
+	
 
 samtools
 	Reading/writing/editing/indexing/viewing SAM/BAM/CRAM format
+	http://quinlanlab.org/tutorials/samtools/samtools.html
 	BCFtools: Reading/writing BCF2/VCF/gVCF files and calling/filtering/summarising SNP and short indel sequence variants
 
 emboss
@@ -33,6 +37,7 @@ bedtools
 
 trimmomatic
 	http://www.usadellab.org/cms/?page=trimmomatic
+	https://datacarpentry.org/wrangling-genomics/03-trimming/index.html
 	read trimming
 	paired end or single end
 
@@ -49,11 +54,6 @@ vcftools
 	Create intersections and subsets of variants
 
 
-
-FILE TRANSFER:
-https://cloud.denbi.de/wiki/Tutorials/File_Transfer_Methods/
-TO Server: sudo scp -i project/swarm/genome/denbi/ikarabay_ecdsa -P 30129 FILE ubuntu@129.70.51.6:FOLDER
-	
 
 NCBI sra
 sequence read archive -> Reads

@@ -1,0 +1,36 @@
+no Space
+	df -h
+		-> see used up space
+	du -sh * | sort -nr | head 
+		-> show file sizes
+	lsof / | grep deleted
+		-> deleted files that are still running in process are not deleted
+	kill -9 PROCESS(second colomn number)
+_--------------------------------------------------------------
+
+=============================================================
+An error occurred during processing.
+A report was generated into the file '/home/ubuntu/ncbi_error_report.xml'.
+If the problem persists, you may consider sending the file
+to 'sra@ncbi.nlm.nih.gov' for assistance.
+=============================================================
+-> very likely to be because of non-sufficient disk space
+
+_--------------------------------------------------------------
+get #threads available
+	lscpu
+	-> 28 CPUs available -> 28 threads
+_--------------------------------------------------------------
+
+FILE TRANSFER:
+https://cloud.denbi.de/wiki/Tutorials/File_Transfer_Methods/
+TO Server: sudo scp -i PATH_TO_PRIVATE_KEY -P 30129 FILE ubuntu@129.70.51.6:FOLDER
+_--------------------------------------------------------------
+
+bwa mem:
+skip orientation error: read header lost orientation (probably during trimming)
+
+_--------------------------------------------------------------
+Bam to sam:
+missing SAM header
+	-> sam file might be corrupt -> check size

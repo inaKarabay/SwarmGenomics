@@ -1,0 +1,52 @@
+REFERENCE:
+assembly:
+	https://www.ncbi.nlm.nih.gov/assembly/GCA_004363605.1/
+GCA...
+	https://www.ncbi.nlm.nih.gov/genome?LinkName=nuccore_genome&from_uid=1596357218
+https://www.ncbi.nlm.nih.gov/nuccore/RJWJ000000000.1?report=gbwithparts&log$=seqview
+
+Indri indri isolate BS62
+Genome Coverage        :: 34.4x
+female
+Total sequence length	2,701,849,413
+Total ungapped length	2,701,360,913
+Gaps between scaffolds	0
+Number of scaffolds	1,243,540
+Scaffold N50	28,620
+Scaffold L50	20,823
+Number of contigs	1,248,425
+Contig N50	26,447
+Contig L50	23,601
+Total number of chromosomes and plasmids	0
+Number of component sequences (WGS or clone)	1,243,540
+---------------------------------------------------------------------
+SRA: https://www.ncbi.nlm.nih.gov/sra/SRX8008840[accn]
+info individual: https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP254212&o=acc_s%3Aa
+download:  sudo wget  https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos3/sra-pub-run-21/SRR11430608/SRR11430608.1 -P /vol/storage/indri/
+
+Run SRR11430608
+BS62 library for Discovar de novo assembly
+BioSample: SAMN07678091
+Illumina
+GC 41.7%
+79.4 Gbps
+female
+------------------------------------------------------------------------
+FASTQC
+Sequences flagged as poor quality	0
+Sequence length	500
+%GC	41
+
+------------------------------------------------------------------------
+TRIMMOMATIC
+Output: Input Read Pairs: 158882095 Both Surviving: 127826753 (80.45%) Forward Only Surviving: 18929289 (11.91%) Reverse Only Surviving: 4578814 (2.88%) Dropped: 7547239 (4.75%)
+_--------------------------------------------------------------
+BWA INDEX
+[bwt_gen] Finished constructing BWT in 608 iterations.
+	[bwa_index] 2172.60 seconds elapse.
+	[bwa_index] Update BWT... 11.11 sec
+	[bwa_index] Pack forward-only FASTA... 19.26 sec
+	[bwa_index] Construct SA from BWT and Occ... 1154.63 sec
+	[main] Version: 0.7.8-r455
+	[main] CMD: bwa index -p bwa_index/index ncbi-genomes-2021-05-28/GCA_004363605.1_IndInd_v1_BIUU_genomic.fna.gz
+	[main] Real time: 3404.233 sec; CPU: 3385.581 sec
