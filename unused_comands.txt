@@ -26,3 +26,10 @@ _--------------------------------------------------------------
 
 not needed (use samtools sort directly)
 	samtools view SRR11430608.1_bwa.sam > SRR11430608.1_bwa.bam
+_--------------------------------------------------------------
+samtools view instead of call
+
+ view calls SNPs
+bcftools view -bvcg SRR11430608.1_raw.bcf > variants.raw.bcf
+makes VCF
+bcftools view variants.raw.bcf > variants_indri.vcf

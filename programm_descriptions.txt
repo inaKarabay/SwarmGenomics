@@ -1,3 +1,6 @@
+NCBI sra
+sequence read archive -> Reads
+
 sra toolkit
 	https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=toolkit_doc
 
@@ -10,6 +13,11 @@ fastqc
 	Export of results to an HTML based permanent report
 	Offline operation to allow automated generation of reports without running the interactive application
 
+trimmomatic
+	http://www.usadellab.org/cms/?page=trimmomatic
+	https://datacarpentry.org/wrangling-genomics/03-trimming/index.html
+	read trimming
+	paired end or single end
 
 bwa
 	burrow-wheeler-aligner
@@ -22,7 +30,26 @@ bwa
 samtools
 	Reading/writing/editing/indexing/viewing SAM/BAM/CRAM format
 	http://quinlanlab.org/tutorials/samtools/samtools.html
-	BCFtools: Reading/writing BCF2/VCF/gVCF files and calling/filtering/summarising SNP and short indel sequence variants
+
+
+BCFtools: 
+	http://samtools.github.io/bcftools/bcftools.html
+	Variant calling: Goal: find places where the reads are systematically different from the genome.
+	Reading/writing BCF2/VCF/gVCF files and calling/filtering/summarising SNP and short indel sequence variants
+	variant calling and manipulating VCFs and BCFs
+
+vcftools
+	on VCF files
+	Filter out specific variants
+	Compare files
+	Summarize variants
+	Convert to different file types
+	Validate and merge files
+	Create intersections and subsets of variants
+	variant calling: determining the differences between a sequenced donor genome and a given (linear) reference genome. In case of diploid or polyploid organisms, we additionally want to determine the corresponding ‘genotype’
+		Variant calling entails identifying single nucleotide polymorphisms (SNPs) and small insertions and deletion (indels) from next generation sequencing data.
+	structural variations = variation in structure of an organism's chromosome.
+		consists of many kinds of variation (region is 1 kb and larger in size )
 
 emboss
 	https://www.bioinformatics.nl/emboss-explorer/
@@ -35,34 +62,3 @@ bedtools
 	genome arithmetic
 	merge, count, complement, and shuffle genomic intervals from multiple files in many formats
 
-trimmomatic
-	http://www.usadellab.org/cms/?page=trimmomatic
-	https://datacarpentry.org/wrangling-genomics/03-trimming/index.html
-	read trimming
-	paired end or single end
-
-bcftools
-	variant calling and manipulating VCFs and BCFs
-
-vcftools
-	on VCF files
-	Filter out specific variants
-	Compare files
-	Summarize variants
-	Convert to different file types
-	Validate and merge files
-	Create intersections and subsets of variants
-
-
-
-NCBI sra
-sequence read archive -> Reads
-
-
-
-vcf-file;  format of a text file used in bioinformatics for storing gene sequence variations
-BAM file:  binary format for storing sequence data. 
-variant calling: determining the differences between a sequenced donor genome and a given (linear) reference genome. In case of diploid or polyploid organisms, we additionally want to determine the corresponding ‘genotype’
-	Variant calling entails identifying single nucleotide polymorphisms (SNPs) and small insertions and deletion (indels) from next generation sequencing data.
-structural variations = variation in structure of an organism's chromosome.
-	consists of many kinds of variation (region is 1 kb and larger in size )

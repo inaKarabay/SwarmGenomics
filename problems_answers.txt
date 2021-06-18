@@ -34,3 +34,5 @@ _--------------------------------------------------------------
 Bam to sam:
 missing SAM header
 	-> sam file might be corrupt -> check size
+
+bam file much smaller than sam: bam is compressed, sorting sam does not make it smaller, but it makes bam file smaller
