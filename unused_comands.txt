@@ -23,6 +23,10 @@ trimmomatic
 sudo trimmomatic PE SRR11430608.1_1.fastq.gz SRR11430608.1_2.fastq.gz SRR11430608.1_1.trim.fastq.gz SRR11430608.1_1un.trim.fastq.gz SRR11430608.1_2.trim.fastq.gz SRR11430608.1_2un.trim.fastq.gz SLIDINGWINDOW:4:20 MINLEN:25 ILLUMINACLIP:TruSeq3-SE:2:30:10
 	did not work because clip not found -> use jar
 _--------------------------------------------------------------
+bwa mem -t 18 $working_dir/$3/bwa_index/index $working_dir$3/1trim.fastq.gz SRR11430608.1_2.trim.fastq.gz > $working_dir$3/bwa.sam #2> $working_dir$3/bwa.log
+#conversion to bam file
+#-m when a lot of memory available -> needs to specify
+samtools sort -@ 18  -o $working_dir$3/bwa.sorted.bam $working_dir$3/bwa.sam
 
 not needed (use samtools sort directly)
 	samtools view SRR11430608.1_bwa.sam > SRR11430608.1_bwa.bam
