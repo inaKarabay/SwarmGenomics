@@ -9,7 +9,7 @@
 trimmomatic_exe='/vol/storage/Trimmomatic-0.36/trimmomatic-0.36.jar'
 working_dir='/vol/storage/'
 
-<<COMMENT
+
 #make new folder for species
 mkdir $working_dir$3
 #download reference
@@ -35,7 +35,6 @@ sudo bwa index -p $working_dir/$3/index $working_dir$3/reference.fna.gz
 #TODO make bam directly -> see Tonis file
 #samtools sort -m when a lot of memory available -> needs to specify
 #conversion to bam file
-COMMENT
 bwa mem -t 18 $working_dir/$3/index $working_dir$3/1trim.fastq.gz $working_dir$3/2trim.fastq.gz  | samtools sort -@ 18 -o $working_dir$3/bwa.sorted.bam
 samtools index $working_dir$3/bwa.sorted.bam
 #unzip reference for samtools
