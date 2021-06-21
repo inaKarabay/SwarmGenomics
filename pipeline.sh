@@ -32,7 +32,6 @@ java -jar $trimmomatic_exe PE  $working_dir$3/$3_1.fastq.gz $working_dir$3/$3_2.
 fastqc -t 18 -o $working_dir$3  -f fastq $working_dir$3/1trim.fastq.gz $working_dir$3/2trim.fastq.gz
 #map reads onto reference
 sudo bwa index -p $working_dir/$3/index $working_dir$3/reference.fna.gz
-#TODO make bam directly -> see Tonis file
 #samtools sort -m when a lot of memory available -> needs to specify
 #conversion to bam file
 bwa mem -t 18 $working_dir/$3/index $working_dir$3/1trim.fastq.gz $working_dir$3/2trim.fastq.gz  | samtools sort -@ 18 -o $working_dir$3/bwa.sorted.bam
@@ -46,11 +45,13 @@ sudo samtools faidx $working_dir$3/reference.fna
 #-f reference fasta
 # --ploidy 1 treats all samples as haploid
 bcftools mpileup -Ou -f $working_dir$3/reference.fna $working_dir$3/bwa.sorted.bam | bcftools call --ploidy 1 -mv -Ob -o $working_dir$3/output.bcf
+#convert to vcf
 bcftools view $working_dir$3/output.bcf > $working_dir$3/output.vcf
 
 #IGV: ~/Downloads/IGV_Linux_2.10.0 ./igv.sh
 #load fasta (fna) and index (fai) for genome and bam, bai, vcf as track
 
+#TODOs
 #runs of homozygosity:
 #use heterozygosity to estimate diversity (hardy weinberg: one genome is enough to estimate diversity)
 #PSMC demography (get data from database: size, size when infant leaves parents (correlation: bigger= less diversity))
