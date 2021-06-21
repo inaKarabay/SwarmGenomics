@@ -1,6 +1,8 @@
 # SwarmGenomics
 
-command_notes: used commands
+Files in /vol/storage/indri
+
+pipeline.sh: bash script with used commands
 
 problems_answers.txt: problems that occured and fixes
 
