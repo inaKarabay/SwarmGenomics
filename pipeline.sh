@@ -43,8 +43,8 @@ sudo samtools faidx $working_dir$3/reference.fna
 #SNP calling
 #mpileup: check each position of the reference if it contains a potential variant
 #-f reference fasta
-# --ploidy 1 treats all samples as haploid
-bcftools mpileup -Ou -f $working_dir$3/reference.fna $working_dir$3/bwa.sorted.bam | bcftools call --ploidy 1 -mv -Ob -o $working_dir$3/output.bcf
+#TODO saple file for ploidy
+bcftools mpileup -Ou -f $working_dir$3/reference.fna $working_dir$3/bwa.sorted.bam | bcftools call -mv -Ob -o $working_dir$3/output.bcf
 #convert to vcf
 bcftools view $working_dir$3/output.bcf > $working_dir$3/output.vcf
 
@@ -52,7 +52,13 @@ bcftools view $working_dir$3/output.bcf > $working_dir$3/output.vcf
 #load fasta (fna) and index (fai) for genome and bam, bai, vcf as track
 
 #TODOs
-#runs of homozygosity:
+#sort reference into chromosomes + histogram
+#repeatmasker (save database!)
+#coverage of chromosomes -> exvlude low coverage regions and repetitions
+#compute heterozygose positions
+#RoH runs of homozygosity: bcftools roh-calling http://samtools.github.io/bcftools/howtos/roh-calling.html
+#PSMC on each chromosome https://github.com/lh3/psmc
+
 #use heterozygosity to estimate diversity (hardy weinberg: one genome is enough to estimate diversity)
 #PSMC demography (get data from database: size, size when infant leaves parents (correlation: bigger= less diversity))
 # -> question: is demography linked with runs of homozygosity?
