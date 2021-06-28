@@ -1,0 +1,28 @@
+1: Sample from Vulpes lagopus
+Identifiers: BioSample: SAMEA8203601; SRA: ERS5890202
+Organism: Vulpes lagopus
+Attributes:
+    /ENA first public="2021-03-31"
+    /ENA last update="2021-03-05"
+    /ENA-CHECKLIST="ERC000011"
+    /External Id="SAMEA8203601"
+    /INSDC center alias="Swedish museum of Natural HIstory"
+    /INSDC center name="Swedish museum of Natural HIstory"
+    /INSDC first public="2021-03-31T17:11:34Z"
+    /INSDC last update="2021-03-05T18:53:48Z"
+    /INSDC status="public"
+    /SRA accession="ERS5890202"
+    /sample name="1068"
+    /Submitter Id="1068"
+    /collected by="Arctic Fox Project"
+    /collection date="2010"
+    /common name="Arctic fox"
+    /geographic location="Sweden"
+    /lab host="Karin Nor�n"
+    /sex="female"
+    /title="Arctic fox"
+Description:
+modern
+Accession: SAMEA8203601	ID: 18582010
+
+

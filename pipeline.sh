@@ -4,9 +4,10 @@
 #input= reference website (in quotation marks!), sra website (in quotation marks!), name of species
 #IMPORTANT: reference from 1 individual only; collect data (sex; are fregments big enough)
 
-#Example: sudo ./pipeline.sh "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/363/605/GCA_004363605.1_IndInd_v1_BIUU/GCA_004363605.1_IndInd_v1_BIUU_genomic.fna.gz" "https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos3/sra-pub-run-21/SRR11430608/SRR11430608.1" IndriIndri 
+#Example Indri: sudo ./pipeline.sh "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/363/605/GCA_004363605.1_IndInd_v1_BIUU/GCA_004363605.1_IndInd_v1_BIUU_genomic.fna.gz" "https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos3/sra-pub-run-21/SRR11430608/SRR11430608.1" IndriIndri 
 
 trimmomatic_exe='/vol/storage/Trimmomatic-0.36/trimmomatic-0.36.jar'
+#Vulpes: sudo ./pipeline.sh "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/345/385/GCF_018345385.1_ASM1834538v1/GCF_018345385.1_ASM1834538v1_genomic.fna.gz" "https://sra-download.ncbi.nlm.nih.gov/traces/era23/ERR/ERR5417/ERR5417979" VulpesLagupos
 working_dir='/vol/storage/'
 
 
@@ -44,9 +45,10 @@ sudo samtools faidx $working_dir$3/reference.fna
 #SNP calling
 #mpileup: check each position of the reference if it contains a potential variant
 #-f reference fasta
-# --ploidy 1 treats all samples as haploid
-bcftools mpileup -Ou -f $working_dir$3/reference.fna $working_dir$3/bwa.sorted.bam | bcftools call --ploidy 1 -mv -Ob -o $working_dir$3/output.bcf
+#TODO sample file for ploidy
+bcftools mpileup -Ou -f $working_dir$3/reference.fna $working_dir$3/bwa.sorted.bam | bcftools call -mv -Ob -o $working_dir$3/output.bcf
 bcftools view $working_dir$3/output.bcf > $working_dir$3/output.vcf
+sudo samtools faidx reference.fna
 
 #IGV: ~/Downloads/IGV_Linux_2.10.0 ./igv.sh
 #load fasta (fna) and index (fai) for genome and bam, bai, vcf as track
