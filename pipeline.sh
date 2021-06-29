@@ -5,9 +5,9 @@
 #IMPORTANT: reference from 1 individual only; collect data (sex; are fregments big enough)
 
 #Example Indri: sudo ./pipeline.sh "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/363/605/GCA_004363605.1_IndInd_v1_BIUU/GCA_004363605.1_IndInd_v1_BIUU_genomic.fna.gz" "https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos3/sra-pub-run-21/SRR11430608/SRR11430608.1" IndriIndri 
+#Vulpes: sudo ./pipeline.sh "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/345/385/GCF_018345385.1_ASM1834538v1/GCF_018345385.1_ASM1834538v1_genomic.fna.gz" "https://sra-download.ncbi.nlm.nih.gov/traces/era23/ERR/ERR5417/ERR5417979" VulpesLagupos
 
 trimmomatic_exe='/vol/storage/Trimmomatic-0.36/trimmomatic-0.36.jar'
-#Vulpes: sudo ./pipeline.sh "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/345/385/GCF_018345385.1_ASM1834538v1/GCF_018345385.1_ASM1834538v1_genomic.fna.gz" "https://sra-download.ncbi.nlm.nih.gov/traces/era23/ERR/ERR5417/ERR5417979" VulpesLagupos
 working_dir='/vol/storage/'
 
 
@@ -49,20 +49,3 @@ bcftools mpileup -Ou -f $working_dir$3/reference.fna $working_dir$3/bwa.sorted.b
 #convert to vcf
 bcftools view $working_dir$3/output.bcf > $working_dir$3/output.vcf
 sudo samtools faidx reference.fna
-
-#IGV: ~/Downloads/IGV_Linux_2.10.0 ./igv.sh
-#load fasta (fna) and index (fai) for genome and bam, bai, vcf as track
-
-#TODOs
-#sort reference into chromosomes + histogram
-#repeatmasker (save database!)
-#coverage of chromosomes -> exvlude low coverage regions and repetitions
-#compute heterozygose positions
-#RoH runs of homozygosity: bcftools roh-calling http://samtools.github.io/bcftools/howtos/roh-calling.html
-#PSMC on each chromosome https://github.com/lh3/psmc
-
-#use heterozygosity to estimate diversity (hardy weinberg: one genome is enough to estimate diversity)
-#PSMC demography (get data from database: size, size when infant leaves parents (correlation: bigger= less diversity))
-# -> question: is demography linked with runs of homozygosity?
-#ref seq (annotations -> get coding areas -> relation of silent and non_silent mutations
-#remove sex chromosomes?
