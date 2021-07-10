@@ -8,6 +8,11 @@ no Space
 		-> deleted files that are still running in process are not deleted
 	kill -9 PROCESS(second colomn number)
 
+check if tmp folder is taking up a lot of sppace 
+	-> tmp wont empty automatically when server is rebooting
+	-> cleans everything olderthan 5 days
+sudo find /tmp -type f -atime +5 -delete
+
 htop
 _--------------------------------------------------------------
 
@@ -39,3 +44,23 @@ missing SAM header
 	-> sam file might be corrupt -> check size
 
 bam file much smaller than sam: bam is compressed, sorting sam does not make it smaller, but it makes bam file smaller
+
+---------------------------------------------------------------
+find files
+sudo find / -name 'h5py'
+
+---------------------------------------------------------------
+import h5py 
+conda install h5py -> -> not installing; test.py doesnt work (still module not found)
+pip install -> test.py works but repeatmasker not
+---------------------------------------------------------------
+fix conda:
+conda install -c conda-forge h5py
+
+
+---------------------------------------------------------------
+---------------------------------------------------------------
+
+
+
+
