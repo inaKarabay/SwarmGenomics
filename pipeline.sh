@@ -44,8 +44,13 @@ sudo samtools faidx $working_dir$3/reference.fna
 #SNP calling
 #mpileup: check each position of the reference if it contains a potential variant
 #-f reference fasta
-#TODO saple file for ploidy
+#TODO sample file for ploidy
 bcftools mpileup -Ou -f $working_dir$3/reference.fna $working_dir$3/bwa.sorted.bam | bcftools call -mv -Ob -o $working_dir$3/output.bcf
 #convert to vcf
 bcftools view $working_dir$3/output.bcf > $working_dir$3/output.vcf
-sudo samtools faidx reference.fna
+#index reference file
+sudo samtools faidx $working_dir$3/reference.fna
+#gzip vcf
+bcftools view $working_dir$3/output.vcf -Oz -o $working_dir$3/output.vcf.gz
+
+
