@@ -37,3 +37,9 @@ samtools view instead of call
 bcftools view -bvcg SRR11430608.1_raw.bcf > variants.raw.bcf
 makes VCF
 bcftools view variants.raw.bcf > variants_indri.vcf
+
+-----------------------------------------------------------------------
+#convert bcf to vcf
+bcftools view $working_dir$3/output.bcf > $working_dir$3/output.vcf
+#header of vcf
+#bcftools view -h output.vcf | head -200

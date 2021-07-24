@@ -1,45 +1,13 @@
 #!/bin/bash
 
-working_dir='/vol/storage/VulpesLagupos'
-
 #IGV: ~/Downloads/IGV_Linux_2.10.0 ./igv.sh
 #load fasta (fna) and index (fai) for genome and bam, bai, vcf as track
 
-
+#ON REFERENCE
 #histogram of chromosome length
 #grep "chromosome" reference.fna
 #-> first 25 lines of reference.fna.fai
 #-> use histogram.py
-
-#sort reference into chromosomes
-#25 because of 25 chromosomes
-#head -25 reference.fna.fai | sudo faidx -x reference.fna
-
-#get chromosomes bigger than 1MB
-cd $working_dir/chromosomes/
-: '
-sudo mkdir big
-for file in NC*
-do
-words=`wc -w $file | awk '{print $1}'`
-#echo $words
-if [ $words -gt 1000000 ]
-then	
-	mv $file big/$file
-fi
-done
-'
-cd big/
-
-
-#split vcf into chromosomes
-tabix -p vcf output.vcf.gz
-names=`head -25 ../reference.fna.fai | awk '{print $1}'`
-for file in $names
-do
-tabix output.vcf.gz $file > $file.vcf
-done
-
 
 #repeatmasker (save database!)
 #install: https://www.repeatmasker.org/RepeatMasker/
@@ -52,15 +20,6 @@ do
 tr -d [:lower:] < $chromosome > new$chromosome
 done
 
-#mkdir vcf
-#cp output.vcf /vcf
-#bcftools view -h output.vcf | head -200
-#bcftools index -f output.vcf 
-#index: "output.vcf" is in a format that cannot be usefully indexed
-
-#count variants
-#bcftools view -H output.vcf.gz | wc -l
-#7.839.513 variants
 
 #CONSENSUS BCFTOOLS
 #index vcf
@@ -73,39 +32,25 @@ done
 #The site NW_024571163.1:21951 overlaps with another variant, skipping... -> a lot
 #PROBLEM consensus not diploid
 
-#CONSENSUS VCFUTILS
-#call -c for consensus
-#-d min coverage, -D max coverage
-#samtools mpileup -uf reference.fna  bwa.sorted.bam | bcftools call -c | vcfutils.pl vcf2fq -d 10 -D 100 > diploid_consensus.fq
-#split consensus files into chromosomes
-#csplit diploid_consensus.fq /\@NC\_05_*/ {*}
-
-
-#PSMC
-#utils/fq2psmcfa -q20 ../VulpesLagupos/diploid_consensus.fq > diploid.psmcfa
-#psmc-master/psmc -N25 -t15 -r5 -p "4+25*2+4+6" -o psmc-master/diploid.psmc psmc-master/diploid.psmcfa
-#utils/psmc2history.pl diploid.psmc | utils/history2ms.pl > ms-cmd.sh
-#utils/psmc_plot.pl diploid diploid.psmc
-#open image
-#gv diploid.eps
-
-
-#ROH
-#bcftools roh -G30 --AF-dflt 0.4 output.vcf > roh.txt
 
 questions:
-vcf file indexen -> gekuerztes file?
-indexen funktioniert nur bei gezipptem file???
+call mit???
+   -A, --keep-alts                 keep all possible alternate alleles at variant sites
+
+bcftools call mit -c (-mv funktioniert nicht)
+
+vcf file ueberspringen? (direkt consensus file?)
 
 warum nur ein consensus file? consensus von bcftools diploid?
 
 warumso viele n bei vcfutils?
 
-ist bcftools most frequent und vcfutils nur wenns geich ist?
+ist bcftools most frequent und vcfutils nur wenns gleich ist?
 
 PSMC demographic woher?
 
 wann repeats entfernen? aus consensus.fq? whrend psmc?
+
 
 coverage in psmc korrigieren? wie hoch FN rate?
 

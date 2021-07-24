@@ -41,16 +41,83 @@ samtools index $working_dir$3/bwa.sorted.bam
 sudo gunzip $working_dir$3/reference.fna.gz
 #index reference
 sudo samtools faidx $working_dir$3/reference.fna
+
+: '
+#OLD
 #SNP calling
 #mpileup: check each position of the reference if it contains a potential variant
 #-f reference fasta
 #TODO sample file for ploidy
-bcftools mpileup -Ou -f $working_dir$3/reference.fna $working_dir$3/bwa.sorted.bam | bcftools call -mv -Ob -o $working_dir$3/output.bcf
-#convert to vcf
-bcftools view $working_dir$3/output.bcf > $working_dir$3/output.vcf
-#index reference file
-sudo samtools faidx $working_dir$3/reference.fna
+#-Ou = output uncompressed bcf
+#-f = faidx indexed fasta file available
+#-Ov = output is unzipped vcf
+#-o= outputfile
+#-m = alternative model for multiallelic and rare-variant calling (conflicts with -c) -> PROBLEM
+#-v =  output variant sites only
+bcftools mpileup -Ou -f $working_dir$3/reference.fna $working_dir$3/bwa.sorted.bam | bcftools call -mv -Ov -o $working_dir$3/output.vcf
 #gzip vcf
 bcftools view $working_dir$3/output.vcf -Oz -o $working_dir$3/output.vcf.gz
 
+#count total variants
+wc -l $working_dir$3/output.vcf
+#7.839.513 variants
+
+#sort reference into chromosomes
+mkdir $working_dir$3chromosomes
+cd $working_dir$3chromosomes
+#25 because of 25 chromosomes
+head -25 ../reference.fna.fai | sudo faidx -x ../reference.fna
+#get chromosomes bigger than 1MB
+sudo mkdir $working_dir$3chromosomes/big
+for file in *
+do
+words=`wc -w $file | awk '{print $1}'`
+echo $words
+if [ $words -gt 1000000 ]
+then	
+	mv $file $working_dir$3chromosomes/big/$file
+fi
+done
+
+#split vcf into chromosomes
+mkdir $working_dir$3vcf
+cd $working_dir$3vcf
+#index vcf file (output.vcf.gz.tbi)
+tabix -p vcf ../output.vcf.gz
+names=`head -25 ../reference.fna.fai | awk '{print $1}'`
+for file in $names
+do
+tabix ../output.vcf.gz $file > $file.vcf
+done
+'
+
+#OR THIS
+#CONSENSUS VCFUTILS
+#call -c for consensus; conflicts with -m
+#vcfutils.pl vcf2fq does not work if -mv is used for bcfcall
+#-d min coverage, -D max coverage
+mkdir $working_dir$3/consensus
+samtools mpileup -uf $working_dir$3/reference.fna  $working_dir$3/bwa.sorted.bam | bcftools call -c | vcfutils.pl vcf2fq -d 10 -D 100 > $working_dir$3/consensus/diploid_consensus.fq
+#split consensus files into chromosomes
+#Name starts with NC_05..
+#contics  start with NW...
+#csplit $working_dir$3/consensus/diploid_consensus.fq /\@NC\_05_*/ {*}
+
+#PSMC
+psmc_dir='/vol/storage/psmc-master'
+cd $working_dir$3/consensus
+#for every fq consensus-file 
+for chromosome in *
+do
+psmc_dir/utils/fq2psmcfa -q20 $chromosome > $chromosome.psmcfa
+psmc_dir/psmc -N25 -t15 -r5 -p "4+25*2+4+6" -o $chromosome.psmc $chromosome.psmcfa
+psmc_dir/utils/psmc2history.pl $chromosome.psmc | psmc_dir/utils/history2ms.pl > ms-cmd.sh
+psmc_dir/utils/psmc_plot.pl diploid $chromosome.psmc
+#open image
+#gv diploid.eps
+done
+
+
+#ROH
+bcftools roh -G30 --AF-dflt 0.4 $working_dir$3/output.vcf > $working_dir$3/roh.txt
 
