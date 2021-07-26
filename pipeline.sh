@@ -55,9 +55,33 @@ sudo samtools faidx $working_dir$3/reference.fna
 #-m = alternative model for multiallelic and rare-variant calling (conflicts with -c) -> PROBLEM
 #-v =  output variant sites only
 bcftools mpileup -Ou -f $working_dir$3/reference.fna $working_dir$3/bwa.sorted.bam | bcftools call -mv -Ov -o $working_dir$3/output.vcf
-#gzip vcf
-bcftools view $working_dir$3/output.vcf -Oz -o $working_dir$3/output.vcf.gz
+'
 
+#OR THIS
+#CONSENSUS VCFUTILS
+#call -c for consensus; conflicts with -m
+#The "-c" option does give ploidy status by using IUPAC codes. Look for "K" or "R" characters (etc.) in your consensus calls.
+#vcfutils.pl vcf2fq does not work if -mv is used for bcfcall
+mkdir $working_dir$3/consensus
+samtools mpileup -C50 -uf $working_dir$3/reference.fna  $working_dir$3/bwa.sorted.bam | bcftools call -c $working_dir$3/output.vcf
+: '
+Explain VCF
+DP= combined Depth
+MQSB=rms mapping quality
+MQ0F=how often mapping quality is zero
+AF1=allele frequency
+AC1=allele count
+DP4=read depth
+MQ=rms mapping quality
+FQ=-281.989
+GT: Genotype (ref=0, alt1=1, alt2=2 etc) 0/0 hemozygot, 0/1 heterozygot
+PL Genotype likelihood
+'
+#-d min coverage, -D max coverage
+vcfutils.pl vcf2fq -d 10 -D 100 $working_dir$3/output.vcf > $working_dir$3/consensus/diploid_consensus.fq
+
+: '
+#NOT NEEDED
 #count total variants
 wc -l $working_dir$3/output.vcf
 #7.839.513 variants
@@ -78,46 +102,44 @@ then
 	mv $file $working_dir$3chromosomes/big/$file
 fi
 done
-
-#split vcf into chromosomes
-mkdir $working_dir$3vcf
-cd $working_dir$3vcf
-#index vcf file (output.vcf.gz.tbi)
-tabix -p vcf ../output.vcf.gz
-names=`head -25 ../reference.fna.fai | awk '{print $1}'`
-for file in $names
-do
-tabix ../output.vcf.gz $file > $file.vcf
-done
 '
 
-#OR THIS
-#CONSENSUS VCFUTILS
-#call -c for consensus; conflicts with -m
-#vcfutils.pl vcf2fq does not work if -mv is used for bcfcall
-#-d min coverage, -D max coverage
-mkdir $working_dir$3/consensus
-samtools mpileup -uf $working_dir$3/reference.fna  $working_dir$3/bwa.sorted.bam | bcftools call -c | vcfutils.pl vcf2fq -d 10 -D 100 > $working_dir$3/consensus/diploid_consensus.fq
 #split consensus files into chromosomes
 #Name starts with NC_05..
 #contics  start with NW...
-#csplit $working_dir$3/consensus/diploid_consensus.fq /\@NC\_05_*/ {*}
+csplit $working_dir$3/consensus/diploid_consensus.fq /\@NC\_05_*/ {*}
 
 #PSMC
+# infers the history of population sizes
 psmc_dir='/vol/storage/psmc-master'
 cd $working_dir$3/consensus
 #for every fq consensus-file 
 for chromosome in *
 do
-psmc_dir/utils/fq2psmcfa -q20 $chromosome > $chromosome.psmcfa
-psmc_dir/psmc -N25 -t15 -r5 -p "4+25*2+4+6" -o $chromosome.psmc $chromosome.psmcfa
-psmc_dir/utils/psmc2history.pl $chromosome.psmc | psmc_dir/utils/history2ms.pl > ms-cmd.sh
-psmc_dir/utils/psmc_plot.pl diploid $chromosome.psmc
+$psmc_dir/utils/fq2psmcfa -q20 $chromosome > $chromosome.psmcfa
+$psmc_dir/psmc -N25 -t15 -r5 -p "4+25*2+4+6" -o $chromosome.psmc $chromosome.psmcfa
+$psmc_dir/utils/psmc2history.pl $chromosome.psmc | $psmc_dir/utils/history2ms.pl > ms-cmd.sh
+#per-generation mutation rate -u and the generation time in years -g
+#example -u 3.83e-08 -g 31
+$psmc_dir/utils/psmc_plot.pl $chromosome $chromosome.psmc
 #open image
-#gv diploid.eps
+#gv $chromosome.eps
 done
 
 
 #ROH
-bcftools roh -G30 --AF-dflt 0.4 $working_dir$3/output.vcf > $working_dir$3/roh.txt
+#gzip vcf
+bcftools view $working_dir$3/output.vcf -Oz -o $working_dir$3/output.vcf.gz
+#split vcf into chromosomes
+mkdir $working_dir$3vcf
+#index vcf file (output.vcf.gz.tbi)
+tabix -p vcf output.vcf.gz
+cd $working_dir$3vcf
+names=`head -25 ../reference.fna.fai | awk '{print $1}'`
+for file in $names
+do
+tabix ../output.vcf.gz $file > $file.vcf
+bcftools roh -G30 --AF-dflt 0.4 $file.vcf > $file_roh.txt
+done
+
 

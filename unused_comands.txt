@@ -43,3 +43,44 @@ bcftools view variants.raw.bcf > variants_indri.vcf
 bcftools view $working_dir$3/output.bcf > $working_dir$3/output.vcf
 #header of vcf
 #bcftools view -h output.vcf | head -200
+-----------------------------------------------------------------------
+#IGV: ~/Downloads/IGV_Linux_2.10.0 ./igv.sh
+#load fasta (fna) and index (fai) for genome and bam, bai, vcf as track
+
+-----------------------------------------------------------------------
+#histogram of chromosome length
+#grep "chromosome" reference.fna
+#-> first 25 lines of reference.fna.fai
+#-> use histogram.py
+
+-----------------------------------------------------------------------
+#repeatmasker (save database!)
+https://supcom.hgc.jp/english/utili_info/manual/RepeatMasker.html
+h5py https://docs.h5py.org/en/latest/build.html
+#install: https://www.repeatmasker.org/RepeatMasker/
+#database https://www.dfam.org/releases/Dfam_3.2/families/Dfam.h5.gz
+#search engine: RMBlast http://www.repeatmasker.org/RMBlast.html
+-----------------------------------------------------------------------
+#remove repeats (repeats are lower case)
+for chromosome in NC*
+do
+tr -d [:lower:] < $chromosome > new$chromosome
+done
+
+-----------------------------------------------------------------------
+#CONSENSUS BCFTOOLS https://samtools.github.io/bcftools/howtos/consensus-sequence.html
+#use when made vcf with -mv 
+#index vcf
+bcftools index output.vcf.gz 
+#normalize indels
+# split multiallelic sites into multiple rows
+#bcftools norm -f reference.fna output.vcf.gz -Ob -o output.norm.bcf
+#bcftools filter --IndelGap 5 output.norm.bcf -Ob -o output.norm.flt-indels.bcf
+cat reference.fna | bcftools consensus output.vcf.gz > consensus.fa
+#when using psmc:
+#The site NW_024571163.1:21951 overlaps with another variant, skipping... -> a lot
+#PROBLEM consensus not diploid
+
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------

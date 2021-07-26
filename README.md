@@ -1,8 +1,10 @@
 # SwarmGenomics
 
-Files in /vol/storage/indri
+Files in /vol/storage/VulpesLagupos
 
 pipeline.sh: bash script with used commands
+
+questions.txt: current questions
 
 problems_answers.txt: problems that occured and fixes
 
