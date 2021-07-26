@@ -18,6 +18,28 @@ Wie kann man die PSMC Bilder interpretieren? (in Ordner results/VulpesLagopus/PS
 Demographic woher? (Groesse, Groesse wenn Kind Eltern verlaesst etc.)
 
 
+----------------------------------------------------------------------------
+Dateien die ich meine:
+
+vcf erstellt mit call -c:
+/vol/storage/VulpesLagupos/output_call_c.vcf
+
+vcf erstellt mit call -c:
+/vol/storage/VulpesLagupos/output.vcf
+
+Consensus file (mit vcfutils erstellt):
+/vol/storage/VulpesLagupos/consensus/diploid_consensus.fq 
+
+Consensus file mit bcftools consensus erstellt (funktioniert nicht fuer PSMC):
+/vol/storage/VulpesLagupos/consensus_call_mv.fa
+
+Ergebnisse von PSCM:
+/vol/storage/VulpesLagupos/consensus/
+
+Ergebnisse von RoH:
+/vol/storage/VulpesLagupos/roh_call_mv.txt
+und
+/vol/storage/VulpesLagupos/new_roh.txt
 
 
 
