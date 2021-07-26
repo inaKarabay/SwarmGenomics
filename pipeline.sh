@@ -142,4 +142,16 @@ tabix ../output.vcf.gz $file > $file.vcf
 bcftools roh -G30 --AF-dflt 0.4 $file.vcf > $file_roh.txt
 done
 
+#output: chromosome - position - state (1:Autozygous/0:HardyWeinberg) - quality
+#ST = state, RG= region (when input is multiple vcf files)
+
+#how often Hardy Weinberg:
+awk '{print $5}' roh.txt | grep "0" | wc -l
+#for roh_call_mv: 6.411.728 
+#how often autozygote:
+awk '{print $5}' roh.txt | grep "1" | wc -l
+#for roh_call_mv: 1.383.983 
+
+#9665 times RG
+#7783890 times ST
 
