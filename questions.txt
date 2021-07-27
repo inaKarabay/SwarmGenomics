@@ -17,6 +17,8 @@ Wie kann man die PSMC Bilder interpretieren? (in Ordner results/VulpesLagopus/PS
 
 Demographic woher? (Groesse, Groesse wenn Kind Eltern verlaesst etc.)
 
+In RoH Datei gibt es neben 0 und 1 auch vereinzelt andere Zahlen??
+
 
 ----------------------------------------------------------------------------
 Dateien die ich meine:
@@ -24,7 +26,7 @@ Dateien die ich meine:
 vcf erstellt mit call -c:
 /vol/storage/VulpesLagupos/output_call_c.vcf
 
-vcf erstellt mit call -c:
+vcf erstellt mit call -mv:
 /vol/storage/VulpesLagupos/output.vcf
 
 Consensus file (mit vcfutils erstellt):
@@ -37,8 +39,6 @@ Ergebnisse von PSCM:
 /vol/storage/VulpesLagupos/consensus/
 
 Ergebnisse von RoH:
-/vol/storage/VulpesLagupos/roh_call_mv.txt
-und
 /vol/storage/VulpesLagupos/new_roh.txt
 
 

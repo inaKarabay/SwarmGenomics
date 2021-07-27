@@ -148,9 +148,11 @@ done
 #how often Hardy Weinberg:
 awk '{print $5}' roh.txt | grep "0" | wc -l
 #for roh_call_mv: 6.411.728 
+#for new_roh.txt: 6.525.129
 #how often autozygote:
 awk '{print $5}' roh.txt | grep "1" | wc -l
 #for roh_call_mv: 1.383.983 
+#for new_roh.txt: 1.230.577
 
 #9665 times RG
 #7783890 times ST
