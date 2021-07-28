@@ -7,7 +7,7 @@ Fuer PSMC muss bcftools call mit -c angewendet werden (Consensus generiert mit b
 Bcftools call mit -A oder nicht? (Wuerde meiner Meinung nach Sinn machen):
    -A, --keep-alts                 keep all possible alternate alleles at variant sites
 
-Bei vcf mit call -mv generiert werden nur Varianten angezeigt, beim vcf mit bcftools call -c generiert wird der Consensus angezeit. Wie kann man hieran die Varianten (und somit heterozygotie) ablesen?
+Bei vcf mit call -mv generiert werden nur Varianten angezeigt, beim vcf mit bcftools call -c generiert wird der Consensus angezeit. Wie kann man hieran die Varianten (und somit heterozygotie) ablesen? (an DP4?)
 
 Vcf mit call-c: warum bei AF1 und AC1 immer 0? Bedeutet dies nicht homozygot?
 

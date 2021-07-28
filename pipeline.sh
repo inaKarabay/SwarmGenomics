@@ -71,7 +71,7 @@ MQSB=rms mapping quality
 MQ0F=how often mapping quality is zero
 AF1=allele frequency
 AC1=allele count
-DP4=read depth
+DP4: determine, whether it is heterozygous or homozygous.DP4 is Number of 1) forward ref alleles; 2) reverse ref; 3) forward non-ref; 4) reverse non-ref alleles, used in variant calling.
 MQ=rms mapping quality
 FQ=-281.989
 GT: Genotype (ref=0, alt1=1, alt2=2 etc) 0/0 hemozygot, 0/1 heterozygot
@@ -139,6 +139,7 @@ names=`head -25 ../reference.fna.fai | awk '{print $1}'`
 for file in $names
 do
 tabix ../output.vcf.gz $file > $file.vcf
+#-G genotypes (instead of genotype likelihoods)
 bcftools roh -G30 --AF-dflt 0.4 $file.vcf > $file_roh.txt
 done
 
@@ -149,11 +150,18 @@ done
 awk '{print $5}' roh.txt | grep "0" | wc -l
 #for roh_call_mv: 6.411.728 
 #for new_roh.txt: 6.525.129
-#how often autozygote:
+#how often autozygote (homozygote):
 awk '{print $5}' roh.txt | grep "1" | wc -l
 #for roh_call_mv: 1.383.983 
 #for new_roh.txt: 1.230.577
 
 #9665 times RG
 #7783890 times ST
+
+#number of heterozygose sites (in vcf_call_mv)
+for file in $working_dir$3vcf/*
+do
+wc -l $file 
+done
+> size.txt
 
