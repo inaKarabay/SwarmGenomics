@@ -1,0 +1,77 @@
+NCBI sra
+sequence read archive -> Reads
+
+sra toolkit
+	https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=toolkit_doc
+
+fastqc
+	quality checks
+	https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
+	Import of data from BAM, SAM or FastQ files (any variant)
+	Providing a quick overview to tell you in which areas there may be problems
+	Summary graphs and tables to quickly assess your data
+	Export of results to an HTML based permanent report
+	Offline operation to allow automated generation of reports without running the interactive application
+
+trimmomatic
+	http://www.usadellab.org/cms/?page=trimmomatic
+	https://datacarpentry.org/wrangling-genomics/03-trimming/index.html
+	read trimming
+	paired end or single end
+
+bwa
+	burrow-wheeler-aligner
+	aligning sequencing reads against a large reference genom
+	components for <150bp and >150bp
+	https://informatics.fas.harvard.edu/short-introduction-to-bwa.html
+	http://bio-bwa.sourceforge.net/bwa.shtml
+	
+
+samtools
+	Reading/writing/editing/indexing/viewing SAM/BAM/CRAM format
+	http://quinlanlab.org/tutorials/samtools/samtools.html
+
+
+BCFtools: 
+	http://samtools.github.io/bcftools/bcftools.html
+	Variant calling: Goal: find places where the reads are systematically different from the genome.
+	Reading/writing BCF2/VCF/gVCF files and calling/filtering/summarising SNP and short indel sequence variants
+	variant calling and manipulating VCFs and BCFs
+
+vcftools
+	on VCF files
+	Filter out specific variants
+	Compare files
+	Summarize variants
+	Convert to different file types
+	Validate and merge files
+	Create intersections and subsets of variants
+	variant calling: determining the differences between a sequenced donor genome and a given (linear) reference genome. In case of diploid or polyploid organisms, we additionally want to determine the corresponding ‘genotype’
+		Variant calling entails identifying single nucleotide polymorphisms (SNPs) and small insertions and deletion (indels) from next generation sequencing data.
+	structural variations = variation in structure of an organism's chromosome.
+		consists of many kinds of variation (region is 1 kb and larger in size )
+
+emboss
+	https://www.bioinformatics.nl/emboss-explorer/
+	pairwise sequence alignment
+	sequence translation
+	sequence statistics
+	sequence format conversion
+
+bedtools
+	genome arithmetic
+	merge, count, complement, and shuffle genomic intervals from multiple files in many formats
+
+vcf-file
+	DP= combined Depth
+	MQSB=rms mapping quality
+	MQ0F=how often mapping quality is zero
+	AF1=allele frequency
+	AC1=allele count
+	DP4: determine, whether it is heterozygous or homozygous.DP4 is Number of 1) forward ref alleles; 2) reverse ref; 3) forward non-ref; 4) reverse non-ref alleles, used in variant calling.
+	MQ=rms mapping quality
+	FQ=-281.989
+	GT: Genotype (ref=0, alt1=1, alt2=2 etc) 0/0 and 1/1 homozygot, 0/1 heterozygot
+	PL Genotype likelihood
+
+

@@ -9,7 +9,7 @@
 
 trimmomatic_exe='/vol/storage/Trimmomatic-0.36/trimmomatic-0.36.jar'
 working_dir='/vol/storage/'
-
+psmc_dir='/vol/storage/psmc-master'
 
 #make new folder for species
 mkdir $working_dir$3
@@ -23,6 +23,7 @@ sudo wget  -O $working_dir$3/$3.sra "$2"
 #--split-files  :for paired end data. Dump each read into separate file. Files will receive suffix corresponding to read number 
 #parallel-fastq-dump O $working_dir$3 --threads 18  --split-files --gzip $working_dir$3/$3.sra
 sudo fastq-dump -O $working_dir$3 --gzip --split-files $working_dir$3/$3.sra
+sudo rm *.sra
 #quality contol
 #-a creates file of adapters
 #TODO how to get adapters
@@ -31,87 +32,54 @@ fastqc -t 18 -o $working_dir$3  -f fastq $working_dir$3/$3_1.fastq.gz $working_d
 #for paired end reads
 java -jar $trimmomatic_exe PE  $working_dir$3/$3_1.fastq.gz $working_dir$3/$3_2.fastq.gz $working_dir$3/1trim.fastq.gz $working_dir$3/1untrim.fastq.gz $working_dir$3/2trim.fastq.gz $working_dir$3/2untrim.fastq.gz SLIDINGWINDOW:4:20 MINLEN:25 ILLUMINACLIP:/vol/storage/Trimmomatic-0.36/adapters/TruSeq3-PE.fa:2:30:10:2:keepBothReads
 fastqc -t 18 -o $working_dir$3  -f fastq $working_dir$3/1trim.fastq.gz $working_dir$3/2trim.fastq.gz
+mkdir fast_qc
+mv *fastqc* fast_qc/
 #map reads onto reference
 sudo bwa index -p $working_dir/$3/index $working_dir$3/reference.fna.gz
 #samtools sort -m when a lot of memory available -> needs to specify
 #conversion to bam file
 bwa mem -t 18 $working_dir/$3/index $working_dir$3/1trim.fastq.gz $working_dir$3/2trim.fastq.gz  | samtools sort -@ 18 -o $working_dir$3/bwa.sorted.bam
+sudo rm *fastq.*
 samtools index $working_dir$3/bwa.sorted.bam
 #unzip reference for samtools
 sudo gunzip $working_dir$3/reference.fna.gz
 #index reference
 sudo samtools faidx $working_dir$3/reference.fna
 
-: '
-#OLD
-#SNP calling
-#mpileup: check each position of the reference if it contains a potential variant
-#-f reference fasta
-#TODO sample file for ploidy
-#-Ou = output uncompressed bcf
-#-f = faidx indexed fasta file available
-#-Ov = output is unzipped vcf
-#-o= outputfile
-#-m = alternative model for multiallelic and rare-variant calling (conflicts with -c) -> PROBLEM
-#-v =  output variant sites only
-bcftools mpileup -Ou -f $working_dir$3/reference.fna $working_dir$3/bwa.sorted.bam | bcftools call -mv -Ov -o $working_dir$3/output.vcf
-'
-
-#OR THIS
 #CONSENSUS VCFUTILS
 #call -c for consensus; conflicts with -m
 #The "-c" option does give ploidy status by using IUPAC codes. Look for "K" or "R" characters (etc.) in your consensus calls.
 #vcfutils.pl vcf2fq does not work if -mv is used for bcfcall
 mkdir $working_dir$3/consensus
 samtools mpileup -C50 -uf $working_dir$3/reference.fna  $working_dir$3/bwa.sorted.bam | bcftools call -c $working_dir$3/output.vcf
-: '
-Explain VCF
-DP= combined Depth
-MQSB=rms mapping quality
-MQ0F=how often mapping quality is zero
-AF1=allele frequency
-AC1=allele count
-DP4: determine, whether it is heterozygous or homozygous.DP4 is Number of 1) forward ref alleles; 2) reverse ref; 3) forward non-ref; 4) reverse non-ref alleles, used in variant calling.
-MQ=rms mapping quality
-FQ=-281.989
-GT: Genotype (ref=0, alt1=1, alt2=2 etc) 0/0 hemozygot, 0/1 heterozygot
-PL Genotype likelihood
-'
+#remove not needed files
+sudo rm *bam*
+sudo rm index*
+
+#make bed file with repeats
+perl -lne 'if(/^(>.*)/){ $head=$1 } else { $fa{$head} .= $_ } END{ foreach $s (sort(keys(%fa))){ print "$s\n$fa{$s}\n" }}'  $working_dir$3/reference.fna | perl -lne 'if(/^>(\S+)/){ $n=$1} else { while(/([a-z]+)/g){ printf("%s\t%d\t%d\n",$n,pos($_)-length($1),pos($_)) } }'  > $working_dir$3/repeats.bed
+#remve repeats from vcf
+bedtools subtract -a $working_dir$3/output.vcf -b $working_dir$3/repeats.bed > $working_dir$3/output_no_repeats.vcf
+#make vcf without repeats standard vcf file
+sudo rm $working_dir$3/output.vcf
+mv $working_dir$3/output_no_repeats.vcf $working_dir$3/output.vcf
+
+#make consensus file
 #-d min coverage, -D max coverage
 vcfutils.pl vcf2fq -d 10 -D 100 $working_dir$3/output.vcf > $working_dir$3/consensus/diploid_consensus.fq
 
-: '
-#NOT NEEDED
-#count total variants
-wc -l $working_dir$3/output.vcf
-#7.839.513 variants
-
-#sort reference into chromosomes
-mkdir $working_dir$3chromosomes
-cd $working_dir$3chromosomes
-#25 because of 25 chromosomes
-head -25 ../reference.fna.fai | sudo faidx -x ../reference.fna
-#get chromosomes bigger than 1MB
-sudo mkdir $working_dir$3chromosomes/big
-for file in *
-do
-words=`wc -w $file | awk '{print $1}'`
-echo $words
-if [ $words -gt 1000000 ]
-then	
-	mv $file $working_dir$3chromosomes/big/$file
-fi
-done
-'
+#get name of bigger chromosomes >1MB
+cat $working_dir$3/reference.fna | awk '$0 ~ ">" {if (NR > 1) {print c;} c=0;printf substr($0,2) "\t"; } $0 !~ ">" {c+=length($0);} END { print c; }' > $working_dir$3/chromosomes_length.txt
+big=`cat $working_dir$3/chromosomes_length.txt | awk '$(NF) >= 1000000  {print $1}'`
 
 #split consensus files into chromosomes
-#Name starts with NC_05..
-#contics  start with NW...
-csplit $working_dir$3/consensus/diploid_consensus.fq /\@NC\_05_*/ {*}
+for chromosome in $big
+do
+csplit $working_dir$3/consensus/diploid_consensus.fq /\@$chromosome/ {*}
+done
 
 #PSMC
 # infers the history of population sizes
-psmc_dir='/vol/storage/psmc-master'
 cd $working_dir$3/consensus
 #for every fq consensus-file 
 for chromosome in *

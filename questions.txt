@@ -1,45 +1,38 @@
-Fragen:
-
-An welcher Stelle sollen Repeats entfernt werden? Direkt in Referenz (am Anfang der Pipeline) oder erst spaeter aus Consensus? Wenn zweites dann wie? (Ich habe bis jetzt mit Repeats weitergearbeitet)
-
-Fuer PSMC muss bcftools call mit -c angewendet werden (Consensus generiert mit bcftools consensus aus vcf mit call -mv erstellt funktioniert nicht; -mv ist jedoch eigentlich der neue Standard)
-
-Bcftools call mit -A oder nicht? (Wuerde meiner Meinung nach Sinn machen):
-   -A, --keep-alts                 keep all possible alternate alleles at variant sites
-
-Bei vcf mit call -mv generiert werden nur Varianten angezeigt, beim vcf mit bcftools call -c generiert wird der Consensus angezeit. Wie kann man hieran die Varianten (und somit heterozygotie) ablesen? (an DP4?)
-
-Vcf mit call-c: warum bei AF1 und AC1 immer 0? Bedeutet dies nicht homozygot?
-
-Wie kann Heterozygotie aus Consensus herausgelesen werden? Bedeuten Kleinbuchstaben heterozygot?
-
-Wie kann man die PSMC Bilder interpretieren? (in Ordner results/VulpesLagopus/PSMC)
-
-Demographic woher? (Groesse, Groesse wenn Kind Eltern verlaesst etc.)
-
-In RoH Datei gibt es neben 0 und 1 auch vereinzelt andere Zahlen??
-
-
-----------------------------------------------------------------------------
 Dateien die ich meine:
 
 vcf erstellt mit call -c:
 /vol/storage/VulpesLagupos/output_call_c.vcf
 
-vcf erstellt mit call -mv:
-/vol/storage/VulpesLagupos/output.vcf
-
 Consensus file (mit vcfutils erstellt):
 /vol/storage/VulpesLagupos/consensus/diploid_consensus.fq 
-
-Consensus file mit bcftools consensus erstellt (funktioniert nicht fuer PSMC):
-/vol/storage/VulpesLagupos/consensus_call_mv.fa
 
 Ergebnisse von PSCM:
 /vol/storage/VulpesLagupos/consensus/
 
 Ergebnisse von RoH:
 /vol/storage/VulpesLagupos/new_roh.txt
+
+-----------------------------------
+Todo:
+
+PSMC:
+verschiedene Filter
+verschiedene Coverage
+Plot: alle Chromosomen in einem plot (mit verschiedenen farben)
+
+RoH:
+Plot log probability (wie bsp)
+
+Skript:
+Files loeschen
+nur grosse chromosomen (nicht nach namen ordnen)
+braucht man chromosomen
+braucht man vcf chromosomen
+
+Demographic:
+opentraits/datasets.html
+(Groesse, Groesse wenn Kind Eltern verlaesst etc.)
+
 
 
 

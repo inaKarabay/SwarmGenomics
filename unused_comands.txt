@@ -44,6 +44,20 @@ bcftools view $working_dir$3/output.bcf > $working_dir$3/output.vcf
 #header of vcf
 #bcftools view -h output.vcf | head -200
 -----------------------------------------------------------------------
+#Variant file
+#SNP calling
+#mpileup: check each position of the reference if it contains a potential variant
+#-f reference fasta
+#TODO sample file for ploidy
+#-Ou = output uncompressed bcf
+#-f = faidx indexed fasta file available
+#-Ov = output is unzipped vcf
+#-o= outputfile
+#-m = alternative model for multiallelic and rare-variant calling (conflicts with -c) -> PROBLEM
+#-v =  output variant sites only
+bcftools mpileup -Ou -f $working_dir$3/reference.fna $working_dir$3/bwa.sorted.bam | bcftools call -mv -Ov -o $working_dir$3/output.vcf
+
+-----------------------------------------------------------------------
 #IGV: ~/Downloads/IGV_Linux_2.10.0 ./igv.sh
 #load fasta (fna) and index (fai) for genome and bam, bai, vcf as track
 
@@ -82,5 +96,20 @@ cat reference.fna | bcftools consensus output.vcf.gz > consensus.fa
 #PROBLEM consensus not diploid
 
 -----------------------------------------------------------------------
-
+#sort reference into chromosomes
+mkdir $working_dir$3chromosomes
+cd $working_dir$3chromosomes
+#25 because of 25 chromosomes
+head -25 ../reference.fna.fai | sudo faidx -x ../reference.fna
+#get chromosomes bigger than 1MB
+sudo mkdir $working_dir$3chromosomes/big
+for file in *
+do
+words=`wc -w $file | awk '{print $1}'`
+echo $words
+if [ $words -gt 1000000 ]
+then	
+	mv $file $working_dir$3chromosomes/big/$file
+fi
+done
 -----------------------------------------------------------------------
