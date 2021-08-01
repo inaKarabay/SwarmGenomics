@@ -97,20 +97,25 @@ done
 
 
 #ROH
-#gzip vcf
+:'
+#for RoH on all vcf files (all big chromosomes)
+#gzip vcf (needed to index file)
 bcftools view $working_dir$3/output.vcf -Oz -o $working_dir$3/output.vcf.gz
-#split vcf into chromosomes
-mkdir $working_dir$3vcf
 #index vcf file (output.vcf.gz.tbi)
 tabix -p vcf output.vcf.gz
+mkdir $working_dir$3vcf
 cd $working_dir$3vcf
-names=`head -25 ../reference.fna.fai | awk '{print $1}'`
-for file in $names
+for file in $big
 do
+#generate vcf file of chromosome
 tabix ../output.vcf.gz $file > $file.vcf
-#-G genotypes (instead of genotype likelihoods)
 bcftools roh -G30 --AF-dflt 0.4 $file.vcf > $file_roh.txt
 done
+'
+
+#-G genotypes (instead of genotype likelihoods)
+bcftools roh -G30 --AF-dflt 0.4 $working_dir$3/output.vcf > roh.txt
+
 
 #output: chromosome - position - state (1:Autozygous/0:HardyWeinberg) - quality
 #ST = state, RG= region (when input is multiple vcf files)
