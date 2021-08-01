@@ -24,9 +24,6 @@ RoH:
 Plot log probability (wie bsp)
 
 Skript:
-Files loeschen
-nur grosse chromosomen (nicht nach namen ordnen)
-braucht man chromosomen
 braucht man vcf chromosomen
 
 Demographic:

@@ -68,14 +68,15 @@ mv $working_dir$3/output_no_repeats.vcf $working_dir$3/output.vcf
 #-d min coverage, -D max coverage
 vcfutils.pl vcf2fq -d 10 -D 100 $working_dir$3/output.vcf > $working_dir$3/consensus/diploid_consensus.fq
 
-#get name of bigger chromosomes >1MB
+#get chromosomes/contigs and size
 cat $working_dir$3/reference.fna | awk '$0 ~ ">" {if (NR > 1) {print c;} c=0;printf substr($0,2) "\t"; } $0 !~ ">" {c+=length($0);} END { print c; }' > $working_dir$3/chromosomes_length.txt
+#get name of bigger chromosomes >1MB
 big=`cat $working_dir$3/chromosomes_length.txt | awk '$(NF) >= 1000000  {print $1}'`
 
 #split consensus files into chromosomes
 for chromosome in $big
 do
-csplit $working_dir$3/consensus/diploid_consensus.fq /\@$chromosome/ {*}
+csplit $working_dir$3/consensus/diploid_consensus.fq /\@$chromosome/ {*} 
 done
 
 #PSMC
