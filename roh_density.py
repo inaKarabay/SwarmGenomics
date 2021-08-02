@@ -22,15 +22,17 @@ for chr in sys.argv[2:]:
 	    		result.append(length)
 	f.close()
         sns.distplot(result, hist = False, kde = True, kde_kws = {'linewidth': 3})
-	#values, base = np.histogram(result, bins=4000)
-	#cumulative = np.cumsum(values)
-	#plt.plot(base[:-1], cumulative, c='blue')
-	sorted_data = np.sort(result)
-	plt.step(sorted_data, np.arange(sorted_data.size))  # From 0 to the number of data points-1
-	plt.step(sorted_data[::-1], np.arange(sorted_data.size))  # From the number of data points-1 to 0
+		#values, base = np.histogram(result, bins=4000)
+		#cumulative = np.cumsum(values)
+		#plt.plot(base[:-1], cumulative, c='blue')
+	#sorted_data = np.sort(result)
+	#plt.step(sorted_data, np.arange(sorted_data.size))  # From 0 to the number of data points-1
+	#plt.step(sorted_data[::-1], np.arange(sorted_data.size))  # From the number of data points-1 to 0
 plt.title('Density Plot')
 plt.ylabel('Density of RoH fragments')
 plt.xlabel('Length of RoH in bases')
+#log scale
+#plt.yscale('log') 
 plt.savefig(sys.argv[1])
 
 

@@ -19,10 +19,6 @@ PSMC:
 verschiedene Filter
 verschiedene Coverage
 
-
-RoH:
-Plot log probability (wie bsp)
-
 Demographic:
 opentraits/datasets.html
 (Groesse, Groesse wenn Kind Eltern verlaesst etc.)

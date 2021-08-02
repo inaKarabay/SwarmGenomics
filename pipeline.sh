@@ -112,7 +112,8 @@ $psmc_dir/utils/fq2psmcfa -q20 $chromosome > $chromosome.psmcfa
 $psmc_dir/psmc -N25 -t15 -r5 -p "4+25*2+4+6" -o $chromosome.psmc $chromosome.psmcfa
 $psmc_dir/utils/psmc2history.pl $chromosome.psmc | $psmc_dir/utils/history2ms.pl > ms-cmd.sh
 #per-generation mutation rate -u and the generation time in years -g
-#example -u 3.83e-08 -g 31
+#example -u 3.83e-08 mutation rate
+# -g 31 generation in years
 $psmc_dir/utils/psmc_plot.pl $chromosome $chromosome.psmc
 python $psmc_plot_dir/psmc_plot.py $chromosome.png $chromosome.psmc
 #open image
@@ -134,9 +135,10 @@ do
 #generate vcf file of chromosome
 tabix -h ../output.vcf.gz $file > $file.vcf
 #-G genotypes (instead of genotype likelihoods)
-bcftools roh -G30 --AF-dflt 0.4 $file.vcf > $file_roh.txt
-python $roh_plot_dir/roh_plot.py $file_roh.txt $file $file.png
+bcftools roh -G30 --AF-dflt 0.4 $file.vcf > $file_roh_chr.txt
 done
+#plot density function for all chromosomes
+python $roh_plot_dir/roh_density.py all_chromosomes_$3.png *roh_chr.txt 
 
 #get allele frequency
 #https://vcftools.github.io/documentation.html
@@ -153,7 +155,9 @@ bcftools roh $working_dir$3/output.vcf > roh_no_params.txt
 bcftools roh -e $working_dir$3/output.vcf > roh_estimate.txt
 #no indels
 bcftools roh -e -i $working_dir$3/output.vcf > roh_estimate_no_indels.txt
+python $roh_plot_dir/roh_density.py whole_genome_$3.png roh*.txt 
 
+: '
 #output: chromosome - position - state (1:Autozygous/0:HardyWeinberg) - quality
 #ST = state, RG= region (when input is multiple vcf files)
 #how often Hardy Weinberg:
@@ -174,4 +178,5 @@ do
 wc -l $file 
 done
 > size.txt
+'
 
