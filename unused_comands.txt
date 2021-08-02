@@ -113,3 +113,5 @@ then
 fi
 done
 -----------------------------------------------------------------------
+bcftools +fill-tags output.vcf -- -t AF > with_AF.vcf
+bcftools query -f'%CHROM\t%POS\t%REF,%ALT\t%INFO/TAG\n' with_AF.vcf | bgzip -c > freqs.tab.gz

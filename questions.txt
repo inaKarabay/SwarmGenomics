@@ -18,17 +18,18 @@ Todo:
 PSMC:
 verschiedene Filter
 verschiedene Coverage
-Plot: alle Chromosomen in einem plot (mit verschiedenen farben)
+
 
 RoH:
 Plot log probability (wie bsp)
 
-Skript:
-braucht man vcf chromosomen
-
 Demographic:
 opentraits/datasets.html
 (Groesse, Groesse wenn Kind Eltern verlaesst etc.)
+
+
+
+
 
 
 
