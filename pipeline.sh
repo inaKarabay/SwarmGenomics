@@ -7,7 +7,7 @@
 #Example Indri: sudo ./pipeline.sh "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/004/363/605/GCA_004363605.1_IndInd_v1_BIUU/GCA_004363605.1_IndInd_v1_BIUU_genomic.fna.gz" "https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos3/sra-pub-run-21/SRR11430608/SRR11430608.1" IndriIndri 
 #Vulpes: sudo ./pipeline.sh "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/345/385/GCF_018345385.1_ASM1834538v1/GCF_018345385.1_ASM1834538v1_genomic.fna.gz" "https://sra-download.ncbi.nlm.nih.gov/traces/era23/ERR/ERR5417/ERR5417979" VulpesLagupos
 
-: '
+<<COMMENT1
 Installations:
 fastq-dump
 fastqc
@@ -21,7 +21,7 @@ csplit
 psmc
 bedtools
 tabix
-'
+COMMENT1
 
 #directories
 trimmomatic_exe='/vol/storage/Trimmomatic-0.36/trimmomatic-0.36.jar'
@@ -30,7 +30,7 @@ psmc_dir='/vol/storage/psmc-master'
 psmc_plot_dir='/home/ubuntu/Ina/SwarmGenomics'
 roh_plot_dir='/home/ubuntu/Ina/SwarmGenomics'
 
-: '
+
 #make new folder for species
 mkdir $working_dir$3
 #download reference
@@ -70,7 +70,6 @@ sudo samtools faidx $working_dir$3/reference.fna
 #call -c for consensus; conflicts with -m
 #The "-c" option does give ploidy status by using IUPAC codes. Look for "K" or "R" characters (etc.) in your consensus calls.
 #vcfutils.pl vcf2fq does not work if -mv is used for bcfcall
-mkdir $working_dir$3/consensus
 samtools mpileup -C50 -uf $working_dir$3/reference.fna  $working_dir$3/bwa.sorted.bam | bcftools call -c $working_dir$3/output.vcf
 #remove not needed files
 sudo rm *bam*
@@ -83,27 +82,40 @@ bedtools subtract -header -a $working_dir$3/output.vcf -b $working_dir$3/repeats
 #make vcf without repeats standard vcf file
 sudo rm $working_dir$3/output.vcf
 mv $working_dir$3/output_no_repeats.vcf $working_dir$3/output.vcf
-'
 
-#make consensus file
-#-d min coverage, -D max coverage
-vcfutils.pl vcf2fq -d 10 -D 100 $working_dir$3/output.vcf > $working_dir$3/consensus/diploid_consensus.fq
 
 #get chromosomes/contigs and size
 cat $working_dir$3/reference.fna | awk '$0 ~ ">" {if (NR > 1) {print c;} c=0;printf substr($0,2) "\t"; } $0 !~ ">" {c+=length($0);} END { print c; }' > $working_dir$3/chromosomes_length.txt
 #get name of bigger chromosomes >1MB
 big=`cat $working_dir$3/chromosomes_length.txt | awk '$(NF) >= 1000000  {print $1}'`
 echo $big
-cd
-#split consensus files into chromosomes
-for chromosome in $big
+
+#gzip vcf (needed to index file)
+bcftools view $working_dir$3/output.vcf -Oz -o $working_dir$3/output.vcf.gz
+#index vcf file (output.vcf.gz.tbi)
+tabix -p vcf output.vcf.gz
+mkdir $working_dir$3vcf
+cd $working_dir$3vcf
+for file in $big
 do
-csplit $working_dir$3/consensus/diploid_consensus.fq /\@$chromosome/ {*} 
+#generate vcf file of chromosome
+tabix -h ../output.vcf.gz $file > $file.vcf
 done
+
+mkdir $working_dir$3/consensus
+#make consensus file for chromosomes
+for chromosome in *
+do
+#-d min coverage, -D max coverage
+vcfutils.pl vcf2fq -d 10 -D 100 $chromosome > $working_dir$3/consensus/$chromosome.fq
+done
+cd $working_dir$3/consensus
+#make consensus file of whole genome
+cat *.fq > $working_dir$3/consensus/genome.fq
+
 
 #PSMC
 # infers the history of population sizes
-cd $working_dir$3/consensus
 #for every fq consensus-file 
 for chromosome in *
 do
@@ -121,62 +133,39 @@ python $psmc_plot_dir/psmc_plot.py $chromosome.png $chromosome.psmc
 done
 python $psmc_plot_dir/psmc_plot.py all.png *.psmc
 
-
 #ROH
+mkdir $working_dir$3/roh
 #for RoH on all vcf files (all big chromosomes)
-#gzip vcf (needed to index file)
-bcftools view $working_dir$3/output.vcf -Oz -o $working_dir$3/output.vcf.gz
-#index vcf file (output.vcf.gz.tbi)
-tabix -p vcf output.vcf.gz
-mkdir $working_dir$3vcf
 cd $working_dir$3vcf
-for file in $big
-do
-#generate vcf file of chromosome
-tabix -h ../output.vcf.gz $file > $file.vcf
+for file in *
+do 
+echo $file
 #-G genotypes (instead of genotype likelihoods)
-bcftools roh -G30 --AF-dflt 0.4 $file.vcf > $file_roh_chr.txt
+bcftools roh -G30 --AF-dflt 0.4 $file > $working_dir$3/roh/$file.roh_chr.txt
+python $roh_plot_dir/roh_density.py $file.roh.png $working_dir$3/roh/$file.roh_chr.txt
 done
 #plot density function for all chromosomes
-python $roh_plot_dir/roh_density.py all_chromosomes_$3.png *roh_chr.txt 
+python $roh_plot_dir/roh_density.py all_chromosomes_$3.png $working_dir$3/roh/*roh_chr.txt 
 
 #get allele frequency
 #https://vcftools.github.io/documentation.html
-vcftools --vcf $working_dir$3/output.vcf --freq --out outputfreq
-bcftools roh --AF-tag outputfreq.frq $working_dir$3/output.vcf > roh_freq_tab.txt
+#./vcftools --vcf output.vcf --freq --out outputfreq
+bcftools roh --AF-tag $working_dir$3/outputfreq.frq $working_dir$3/output.vcf > $working_dir$3/roh_freq_tab.txt
 #roh for whole genome
 #--GTs-only ignoring genotype likelihoods (FORMAT/PL)
-bcftools roh -G30 --AF-dflt 0.4 $working_dir$3/output.vcf > roh.txt
+bcftools roh -G30 --AF-dflt 0.4 $working_dir$3/output.vcf > $working_dir$3/roh.txt
 #AF 0.5
-bcftools roh --AF-dflt 0.5 $working_dir$3/output.vcf > roh_AF05.txt
+bcftools roh --AF-dflt 0.5 $working_dir$3/output.vcf > $working_dir$3/roh_AF05.txt
 #without specification
-bcftools roh $working_dir$3/output.vcf > roh_no_params.txt
+bcftools roh $working_dir$3/output.vcf > $working_dir$3/roh_no_params.txt
 #-e estimate AC and AF on the fly
-bcftools roh -e $working_dir$3/output.vcf > roh_estimate.txt
+bcftools roh -e GT - $working_dir$3/output.vcf > $working_dir$3/roh_estimate.txt
 #no indels
-bcftools roh -e -i $working_dir$3/output.vcf > roh_estimate_no_indels.txt
-python $roh_plot_dir/roh_density.py whole_genome_$3.png roh*.txt 
+bcftools roh -e PL - -i $working_dir$3/output.vcf > $working_dir$3/roh_estimate_no_indels.txt
+!python $roh_plot_dir/roh_density.py whole_genome_$3.png $working_dir$3/roh*.txt 
+!for run in $working_dir$3/roh*.txt
+!do
+!python $roh_plot_dir/roh_density.py $run_$3.png $run
+!done
 
-: '
-#output: chromosome - position - state (1:Autozygous/0:HardyWeinberg) - quality
-#ST = state, RG= region (when input is multiple vcf files)
-#how often Hardy Weinberg:
-awk '{print $5}' roh.txt | grep "0" | wc -l
-#for roh_call_mv: 6.411.728 
-#for new_roh.txt: 6.525.129
-#how often autozygote (homozygote):
-awk '{print $5}' roh.txt | grep "1" | wc -l
-#for roh_call_mv: 1.383.983 
-#for new_roh.txt: 1.230.577
-
-#9665 times RG
-#7783890 times ST
-
-#number of heterozygose sites 
-for file in $working_dir$3vcf/*
-do
-wc -l $file 
-done
-> size.txt
-'
 

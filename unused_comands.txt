@@ -115,3 +115,29 @@ done
 -----------------------------------------------------------------------
 bcftools +fill-tags output.vcf -- -t AF > with_AF.vcf
 bcftools query -f'%CHROM\t%POS\t%REF,%ALT\t%INFO/TAG\n' with_AF.vcf | bgzip -c > freqs.tab.gz
+
+------------------------------------------------------------------------
+
+#output: chromosome - position - state (1:Autozygous/0:HardyWeinberg) - quality
+#ST = state, RG= region (when input is multiple vcf files)
+#how often Hardy Weinberg:
+#awk '{print $5}' roh.txt | grep "0" | wc -l
+#for roh_call_mv: 6.411.728 
+#for new_roh.txt: 6.525.129
+#how often autozygote (homozygote):
+#awk '{print $5}' roh.txt | grep "1" | wc -l
+#for roh_call_mv: 1.383.983 
+#for new_roh.txt: 1.230.577
+
+#9665 times RG
+#7783890 times ST
+
+#number of heterozygose sites 
+for file in $working_dir$3vcf/*
+do
+wc -l $file 
+done
+> size.txt
+
+--------------------------------------------
+csplit $working_dir$3/consensus/diploid_consensus.fq /\@$chromosome/ {*} 
