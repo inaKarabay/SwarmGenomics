@@ -14,22 +14,29 @@ psmc_dir='/vol/storage/psmc-master'
 psmc_plot_dir='/home/ubuntu/Ina/SwarmGenomics'
 roh_plot_dir='/home/ubuntu/Ina/SwarmGenomics'
 
-
 #make consensus file
 #-d min coverage, -D max coverage
 vcfutils.pl vcf2fq -d 10 -D 100 $working_dir$3/output.vcf > $working_dir$3/consensus/diploid_consensus.fq
+#substr outside of string at /usr/bin/vcfutils.pl line 557, <> line 125302954.
+#Use of uninitialized value in lc at /usr/bin/vcfutils.pl line 557, <> line 125302954.
+#substr outside of string at /usr/bin/vcfutils.pl line 557, <> line 125302954.
+
+#splitting vcf into chromosomes and then using vcf2fq yields same error message
 
 #get chromosomes/contigs and size
 cat $working_dir$3/reference.fna | awk '$0 ~ ">" {if (NR > 1) {print c;} c=0;printf substr($0,2) "\t"; } $0 !~ ">" {c+=length($0);} END { print c; }' > $working_dir$3/chromosomes_length.txt
 #get name of bigger chromosomes >1MB
 big=`cat $working_dir$3/chromosomes_length.txt | awk '$(NF) >= 1000000  {print $1}'`
 echo $big
-cd
+cd 
 #split consensus files into chromosomes
 for chromosome in $big
 do
 csplit $working_dir$3/consensus/diploid_consensus.fq /\@$chromosome/ {*} 
 done
+
+cat consensusNC_0548*.vcf.fq > $working_dir$3/consensus/genome.fq
+
 
 #PSMC
 # infers the history of population sizes

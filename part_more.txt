@@ -1,0 +1,38 @@
+: '
+big=`cat $working_dir$3/chromosomes_length.txt | awk '$(NF) >= 1000000  {print $1}'`
+
+#ROH
+#for RoH on all vcf files (all big chromosomes)
+#gzip vcf (needed to index file)
+bcftools view $working_dir$3/output.vcf -Oz -o $working_dir$3/output.vcf.gz
+#index vcf file (output.vcf.gz.tbi)
+tabix -p vcf output.vcf.gz
+mkdir $working_dir$3vcf
+cd $working_dir$3vcf
+for file in $big
+do
+#generate vcf file of chromosome
+tabix -h ../output.vcf.gz $file > $file.vcf
+done
+for file in *
+do 
+#-G genotypes (instead of genotype likelihoods)
+bcftools roh -G30 --AF-dflt 0.4 $file.vcf > $working_dir$3/$file_roh_chr.txt
+done
+#plot density function for all chromosomes
+python $roh_plot_dir/roh_density.py all_chromosomes_$3.png $working_dir$3/*roh_chr.txt 
+
+#--------------------------------------------------------------------
+
+#get allele frequency
+#https://vcftools.github.io/documentation.html
+#./vcftools --vcf output.vcf --freq --out outputfreq
+bcftools roh --AF-tag $working_dir$3/outputfreq.frq $working_dir$3/output.vcf > $working_dir$3/roh_freq_tab.txt
+#roh for whole genome
+#--GTs-only ignoring genotype likelihoods (FORMAT/PL)
+bcftools roh -G30 --AF-dflt 0.4 $working_dir$3/output.vcf > $working_dir$3/roh.txt
+#AF 0.5
+bcftools roh --AF-dflt 0.5 $working_dir$3/output.vcf > $working_dir$3/roh_AF05.txt
+#without specification
+bcftools roh $working_dir$3/output.vcf > $working_dir$3/roh_no_params.txt
+'

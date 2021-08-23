@@ -21,10 +21,10 @@ for chr in sys.argv[2:]:
 	    		length=(x.split('	')[5])
 	    		result.append(length)
 	f.close()
-        sns.distplot(result, hist = False, kde = True, kde_kws = {'linewidth': 3})
-		#values, base = np.histogram(result, bins=4000)
-		#cumulative = np.cumsum(values)
-		#plt.plot(base[:-1], cumulative, c='blue')
+	sns.distplot(result, hist = False, kde = True)
+	#values, base = np.histogram(result, bins=4000)
+	#cumulative = np.cumsum(values)
+	#plt.plot(base[:-1], cumulative, c='blue')
 	#sorted_data = np.sort(result)
 	#plt.step(sorted_data, np.arange(sorted_data.size))  # From 0 to the number of data points-1
 	#plt.step(sorted_data[::-1], np.arange(sorted_data.size))  # From the number of data points-1 to 0

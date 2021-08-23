@@ -1,0 +1,5 @@
+# This file was produced by: bcftools roh(1.7+htslib-1.7-2)
+# The command line was:	bcftools roh --AF-tag outputfreq.frq /vol/storage/VulpesLagupos/output.vcf
+#
+# RG	[2]Sample	[3]Chromosome	[4]Start	[5]End	[6]Length (bp)	[7]Number of markers	[8]Quality (average fwd-bwd phred score)
+# ST	[2]Sample	[3]Chromosome	[4]Position	[5]State (0:HW, 1:AZ)	[6]Quality (fwd-bwd phred score)
