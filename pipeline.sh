@@ -130,6 +130,7 @@ $psmc_dir/utils/psmc_plot.pl $chromosome $chromosome.psmc
 python $psmc_plot_dir/psmc_plot.py $chromosome.png $chromosome.psmc
 #open image
 #gv $chromosome.eps
+#convert eps to png: gs -dSAFER -dBATCH -dNOPAUSE -dEPSCrop -r600 -sDEVICE=pngalpha -sOutputFile=IMAGE.png IMAGE.eps
 done
 python $psmc_plot_dir/psmc_plot.py all.png *.psmc
 
