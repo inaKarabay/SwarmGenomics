@@ -94,8 +94,8 @@ echo $big
 bcftools view $working_dir$3/output.vcf -Oz -o $working_dir$3/output.vcf.gz
 #index vcf file (output.vcf.gz.tbi)
 tabix -p vcf output.vcf.gz
-mkdir $working_dir$3vcf
-cd $working_dir$3vcf
+mkdir $working_dir$3/vcf
+cd $working_dir$3/vcf
 for file in $big
 do
 #generate vcf file of chromosome
@@ -133,6 +133,41 @@ python $psmc_plot_dir/psmc_plot.py $chromosome.png $chromosome.psmc
 done
 python $psmc_plot_dir/psmc_plot.py all.png *.psmc
 
+#----------------------------
+#same with more conservative coverage
+mkdir $working_dir$3/consensus_depth20_50
+cd $working_dir$3/vcf
+#make consensus file for chromosomes
+for chromosome in *
+do
+echo $chromosome
+#-d min coverage, -D max coverage
+vcfutils.pl vcf2fq -d 20 -D 50 $chromosome > $working_dir$3/consensus_depth20_50/$chromosome.fq
+done
+sudo chmod 777 $working_dir$3/consensus_depth20_50
+cd $working_dir$3/consensus_depth20_50
+#make consensus file of whole genome
+cat *.fq > $working_dir$3/consensus_depth20_50/genome.fq
+#PSMC
+# infers the history of population sizes
+#for every fq consensus-file 
+for chromosome in *
+do
+#-q20
+$psmc_dir/utils/fq2psmcfa -q20 $chromosome > $chromosome.psmcfa
+$psmc_dir/psmc -N25 -t15 -r5 -p "4+25*2+4+6" -o $chromosome.psmc $chromosome.psmcfa
+$psmc_dir/utils/psmc2history.pl $chromosome.psmc | $psmc_dir/utils/history2ms.pl > ms-cmd.sh
+#per-generation mutation rate -u and the generation time in years -g
+#example -u 3.83e-08 mutation rate
+# -g 31 generation in years
+$psmc_dir/utils/psmc_plot.pl $chromosome $chromosome.psmc
+python $psmc_plot_dir/psmc_plot.py $chromosome.png $chromosome.psmc
+#open image
+#gv $chromosome.eps
+done
+python $psmc_plot_dir/psmc_plot.py all.png *.psmc
+#----------------------------
+
 #ROH
 mkdir $working_dir$3/roh
 #for RoH on all vcf files (all big chromosomes)
@@ -150,22 +185,22 @@ python $roh_plot_dir/roh_density.py all_chromosomes_$3.png $working_dir$3/roh/*r
 #get allele frequency
 #https://vcftools.github.io/documentation.html
 #./vcftools --vcf output.vcf --freq --out outputfreq
-bcftools roh --AF-tag $working_dir$3/outputfreq.frq $working_dir$3/output.vcf > $working_dir$3/roh_freq_tab.txt
+#bcftools roh --AF-tag $working_dir$3/outputfreq.frq $working_dir$3/output.vcf > $working_dir$3/roh/roh_freq_tab.txt
 #roh for whole genome
 #--GTs-only ignoring genotype likelihoods (FORMAT/PL)
-bcftools roh -G30 --AF-dflt 0.4 $working_dir$3/output.vcf > $working_dir$3/roh.txt
+bcftools roh -G30 --AF-dflt 0.4 $working_dir$3/output.vcf > $working_dir$3/roh/roh.txt
 #AF 0.5
-bcftools roh --AF-dflt 0.5 $working_dir$3/output.vcf > $working_dir$3/roh_AF05.txt
-#without specification
-bcftools roh $working_dir$3/output.vcf > $working_dir$3/roh_no_params.txt
+bcftools roh --AF-dflt 0.5 $working_dir$3/output.vcf > $working_dir$3/roh/roh_AF05.txt
 #-e estimate AC and AF on the fly
-bcftools roh -e GT - $working_dir$3/output.vcf > $working_dir$3/roh_estimate.txt
+#very slow
+bcftools roh -e GT - $working_dir$3/output.vcf > $working_dir$3/roh/roh_estimate.txt
 #no indels
-bcftools roh -e PL - -i $working_dir$3/output.vcf > $working_dir$3/roh_estimate_no_indels.txt
-!python $roh_plot_dir/roh_density.py whole_genome_$3.png $working_dir$3/roh*.txt 
-!for run in $working_dir$3/roh*.txt
+bcftools roh -e PL - -i $working_dir$3/output.vcf > $working_dir$3/roh/roh_estimate_no_indels.txt
+cd $working_dir$3/roh/
+!python $roh_plot_dir/roh_density.py whole_genome_$3.png roh*.txt 
+!for run in roh*.txt
 !do
-!python $roh_plot_dir/roh_density.py $run_$3.png $run
+!python $roh_plot_dir/roh_density.py $run.png $run
 !done
 
 
