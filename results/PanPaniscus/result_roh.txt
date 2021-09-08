@@ -1,0 +1,12 @@
+results/PanPaniscus/roh.txt
+Heterozygot 1225820
+Homozygot 3258
+Amount of RG 348
+Average length 341978.9626436782
+
+results/PanPaniscus/roh_AF05.txt
+Heterozygot 1226277
+Homozygot 2801
+Amount of RG 516
+Average length 252818.66666666666
+

@@ -1,0 +1,67 @@
+Dryobates pubescens (Downy woodpecker)
+https://www.ncbi.nlm.nih.gov/assembly/GCA_014839835.1
+https://www.ncbi.nlm.nih.gov/sra/SRX333094[accn]
+
+bDryPub1.pri
+
+Organism name:
+    Dryobates pubescens (Downy woodpecker)
+Isolate:
+    bDryPub1
+Sex:
+    female
+BioSample:
+    SAMN12629497
+BioProject:
+    PRJNA561991
+Submitter:
+    Vertebrate Genomes Project
+Date:
+    2020/10/02
+Assembly type:
+    haploid (principal pseudohaplotype of diploid)
+Assembly level:
+    Chromosome
+Genome representation:
+    full
+GenBank assembly accession:
+    GCA_014839835.1 (latest)
+RefSeq assembly accession:
+    n/a
+RefSeq assembly and GenBank assembly identical:
+    n/a
+WGS Project:
+    JACNMV01
+Assembly method:
+    FALCON v. 1.3.0 2018.31.08-03.06; FALCON-Unzip v. 1.2.0 6.0.0.47841; purge_dups v. github ca23030ccf4254dfd2d3a5ea90d0eed41c24f88b ca23030ccf4254dfd2d3a5ea90d0eed41c24f88b; Scaff10x v. 4.1.0; Bionano Solve v. 3.2.1_04122018; Salsa2 HiC v. 2.2; Arrow polishing and gap filling v. SMRTLink7.0.1; Longranger Align v. 2.2.2; freebayes v. 1.3.1; gEVAL manual curation v. 2020-07-16; VGP assembly pipeline v. 1.6
+Expected final version:
+    no
+Genome coverage:
+    62.43x
+Sequencing technology:
+    PacBio Sequel I CLR; Illumina NovaSeq; Arima Genomics Hi-C; Bionano Genomics DLS
+Linked assembly:
+    GCA_014839825.1 (alternate pseudohaplotype of diploid)
+
+IDs: 8220541 [UID] 22448298 [GenBank]
+See Genome Information for Dryobates pubescens
+There are 3 assemblies for this organism
+See more
+History
+(Show revision history)
+Comment
+
+This assembly represents the principal haplotype of the diploid genome Picoides pubescens and includes the chromosomes. The alternate haplotype sequences are in WGS project JACNMW000000000
+
+Global statistics
+Total sequence length	1,187,956,536
+Total ungapped length	1,183,953,406
+Gaps between scaffolds	0
+Number of scaffolds	181
+Scaffold N50	38,715,865
+Scaffold L50	11
+Number of contigs	368
+Contig N50	19,150,283
+Contig L50	20
+Total number of chromosomes and plasmids	47
+Number of component sequences (WGS or clone)	181

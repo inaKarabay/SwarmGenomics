@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 #https://gtpb.github.io/PGDH19/pages/ms-psmc_practical
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
 import sys
 
 #exampe: python psmc_plot.py name.png *.psmc

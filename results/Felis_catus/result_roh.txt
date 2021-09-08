@@ -1,0 +1,11 @@
+results/Felis_catus/roh.txt
+Heterozygot 1906580
+Homozygot 211097
+Amount of RG 1198
+Average length 85894.66861435726
+
+results/Felis_catus/roh_AF05.txt
+Heterozygot 1942675
+Homozygot 175002
+Amount of RG 1384
+Average length 59601.25650289017

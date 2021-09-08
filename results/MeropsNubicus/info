@@ -1,0 +1,67 @@
+https://www.ncbi.nlm.nih.gov/assembly/GCA_009819595.1
+https://www.ncbi.nlm.nih.gov/sra/SRX340756[accn]
+
+
+bMerNub1.pri
+
+Organism name:
+    Merops nubicus (carmine bee-eater)
+Isolate:
+    bMerNub1
+Sex:
+    female
+BioSample:
+    SAMN12621035
+BioProject:
+    PRJNA561894
+Submitter:
+    Vertebrate Genomes Project
+Date:
+    2019/12/31
+Assembly type:
+    haploid (principal pseudohaplotype of diploid)
+Assembly level:
+    Chromosome
+Genome representation:
+    full
+GenBank assembly accession:
+    GCA_009819595.1 (latest)
+RefSeq assembly accession:
+    n/a
+RefSeq assembly and GenBank assembly identical:
+    n/a
+WGS Project:
+    WNMU01
+Assembly method:
+    FALCON v. DNANexus 1.9.0; FALCON-Unzip v. DNANexus 1.0.6; purge_haplotigs v. v1.0.3+ 1.Nov.2018; scaff10x v. 2.0.2; Bionano Solve DLS v. 3.2.1; Salsa HiC v. 2.2; Arrow smrtanalysis Pacbio polishing & gap filling v. 6.0.0.47841; longranger align v. 2.2.2; freebayes Illumina polishing v. 1.3.1; gEVAL manual curation v. 2019-08-15; VGP assembly pipeline individual v. 1.5
+Expected final version:
+    no
+Genome coverage:
+    60.12x
+Sequencing technology:
+    PacBio Sequel I CLR; Illumina NovaSeq; Arima Genomics Hi-C; Bionano Genomics DLS
+Linked assembly:
+    GCA_009819585.1 (alternate pseudohaplotype of diploid)
+
+IDs: 5428281 [UID] 15715268 [GenBank]
+See Genome Information for Merops nubicus
+There are 3 assemblies for this organism
+See more
+History
+(Show revision history)
+Comment
+
+This assembly represents the principal haplotype of the diploid genome Merops nubicus and includes the chromosomes. The alternate haplotype sequences are in WGS project WNMV00000000
+
+Global statistics
+Total sequence length	1,149,356,202
+Total ungapped length	1,143,301,140
+Gaps between scaffolds	0
+Number of scaffolds	109
+Scaffold N50	49,132,790
+Scaffold L50	9
+Number of contigs	378
+Contig N50	12,372,304
+Contig L50	26
+Total number of chromosomes and plasmids	37
+Number of component sequences (WGS or clone)	109

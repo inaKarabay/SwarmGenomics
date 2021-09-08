@@ -1,6 +1,6 @@
 import sys
 import numpy as np
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
 import seaborn as sns
 
 #Arguments: RoH-File and Name of Chromosome
@@ -34,7 +34,6 @@ plt.xlabel('Length of RoH in bases')
 #log scale
 #plt.yscale('log') 
 plt.savefig(sys.argv[1])
-
 
 
 

@@ -1,0 +1,72 @@
+https://www.ncbi.nlm.nih.gov/assembly/GCF_000181335.3
+https://www.ncbi.nlm.nih.gov/sra/SRX11811057[accn]
+
+Felis_catus_9.0
+
+Organism name:
+    Felis catus (domestic cat)
+Infraspecific name:
+    Breed: Abyssinian
+Isolate:
+    Cinnamon
+Sex:
+    female
+BioSample:
+    SAMN02953640
+BioProject:
+    PRJNA16726
+Submitter:
+    Genome Sequencing Center (GSC) at Washington University (WashU) School of Medicine
+Date:
+    2017/11/20
+Synonyms:
+    felCat9
+Assembly level:
+    Chromosome
+Genome representation:
+    full
+RefSeq category:
+    representative genome
+GenBank assembly accession:
+    GCA_000181335.4 (latest)
+RefSeq assembly accession:
+    GCF_000181335.3 (latest)
+RefSeq assembly and GenBank assembly identical:
+    no (hide details)
+
+        Only in RefSeq: chromosome MT (in non-nuclear assembly-unit)
+
+        Data displayed for RefSeq version
+
+WGS Project:
+    AANG04
+Assembly method:
+    WTDBG v. 1.2, Chromonomer v. 1.0.7
+Genome coverage:
+    72x
+Sequencing technology:
+    PacBio; 454 Titanium; Illumina; Sanger dideoxy sequencing
+
+IDs: 1448961 [UID] 5671478 [GenBank] 5705068 [RefSeq]
+See Genome Information for Felis catus
+There are 4 assemblies for this organism
+See more
+History
+(Show revision history)
+Comment
+
+Assembly Release Notes for domestic cat assembly, version Felis catus 9.0:
+ A female Abyssinian cat named Cinnamon kept by Dr. Kristina Narfstrom at the University of Missouri was used as the DNA source for all sequencing reads. High molecular ...  more
+
+Global statistics
+Total sequence length	2,521,863,845
+Total ungapped length	2,476,453,204
+Gaps between scaffolds	19
+Number of scaffolds	4,525
+Scaffold N50	83,967,707
+Scaffold L50	11
+Number of contigs	4,909
+Contig N50	41,915,695
+Contig L50	19
+Total number of chromosomes and plasmids	20
+Number of component sequences (WGS or clone)	4,998

@@ -1,0 +1,62 @@
+https://www.ncbi.nlm.nih.gov/assembly/GCA_013052645.3
+new: https://www.ncbi.nlm.nih.gov/assembly/GCF_000258655.2
+https://www.ncbi.nlm.nih.gov/sra/SRX10375570[accn]
+
+Mhudiblu_PPA_v2
+
+Organism name:
+    Pan paniscus (pygmy chimpanzee)
+Isolate:
+    Mhudiblu (Carbone #601152)
+Sex:
+    female
+BioSample:
+    SAMN11123633
+BioProject:
+    PRJNA526933
+Submitter:
+    University of Washington
+Date:
+    2021/03/18
+Assembly level:
+    Chromosome
+Genome representation:
+    full
+RefSeq category:
+    representative genome
+GenBank assembly accession:
+    GCA_013052645.3 (latest)
+RefSeq assembly accession:
+    n/a
+RefSeq assembly and GenBank assembly identical:
+    n/a
+WGS Project:
+    SSBP03
+Assembly method:
+    FALCON v. git id 53444482 dgordon branch available on 2017.06.13
+Expected final version:
+    yes
+Genome coverage:
+    73.9x
+Sequencing technology:
+    PacBio CLR
+
+IDs: 9548001 [UID] 25597578 [GenBank]
+See Genome Information for Pan paniscus
+There are 3 assemblies for this organism
+See more
+History
+(Show revision history)
+Comment
+Global statistics
+Total sequence length	3,203,531,224
+Total ungapped length	3,073,727,785
+Gaps between scaffolds	114
+Number of scaffolds	5,520
+Scaffold N50	53,386,619
+Scaffold L50	19
+Number of contigs	6,129
+Contig N50	15,060,308
+Contig L50	53
+Total number of chromosomes and plasmids	24
+Number of component sequences (WGS or clone)	6,129
