@@ -9,3 +9,10 @@ Heterozygot 1942675
 Homozygot 175002
 Amount of RG 1384
 Average length 59601.25650289017
+
+
+/home/ubuntu/roh_no_G.txt
+Heterozygot 1929782
+Homozygot 187895
+Amount of RG 1799
+Average length 49324.83435241801

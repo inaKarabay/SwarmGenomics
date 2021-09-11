@@ -35,4 +35,17 @@ print("Heterozygot", len(result_0))
 print("Homozygot", len(result_1))
 print("Amount of RG", len(length_roh))
 print("Average length", sum(length_roh) / len(length_roh))
+length_roh.sort()
+print("Smallest length", length_roh[0],length_roh[1],length_roh[2],length_roh[3],length_roh[4])
+biggest=length_roh[-100:]
+print("Average length of top 100 RoH", sum(biggest) / len(biggest))
+o=0
+u=0
+for i in length_roh:
+	if i>1000000:
+		o=o+1
+	if i<100000:
+		u=u+1
+print("Amount and Percent bigger than 1000000", o, o / len(length_roh) )
+print("Amount and Percent smaller than 100000", u, u / len(length_roh) )
 
