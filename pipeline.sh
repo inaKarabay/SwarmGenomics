@@ -11,7 +11,7 @@
 #DryobatesPubescens:  sudo ./pipeline.sh "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/014/839/835/GCA_014839835.1_bDryPub1.pri/GCA_014839835.1_bDryPub1.pri_genomic.fna.gz" "https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos1/sra-pub-run-5/SRR949791/SRR949791.2" DryobatesPubescens
 #MeropsNubicus: sudo ./pipeline.sh "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/819/595/GCA_009819595.1_bMerNub1.pri/GCA_009819595.1_bMerNub1.pri_genomic.fna.gz" "https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos1/sra-pub-run-5/SRR958516/SRR958516.2" MeropsNubicus
 <<COMMENT1
-Installations:
+Installations required:
 fastq-dump
 fastqc
 trimmomatic
@@ -26,12 +26,14 @@ bedtools
 tabix
 COMMENT1
 
+#TODO: change name for psmc_plot_dir (directory of psmc_plot.py) and roh_plot_dir (directory of roh_density.py and roh_stats.py)
+
 #directories
 trimmomatic_exe='/vol/storage/Trimmomatic-0.36/trimmomatic-0.36.jar'
 working_dir='/vol/storage/'
 psmc_dir='/vol/storage/psmc-master'
-psmc_plot_dir='/home/ubuntu/Ina/SwarmGenomics'
-roh_plot_dir='/home/ubuntu/Ina/SwarmGenomics'
+psmc_plot_dir='/home/ubuntu/SwarmGenomics'
+roh_plot_dir='/home/ubuntu/SwarmGenomics'
 python_dir='/home/ubuntu/miniconda3/bin/python3.7'
 
 
