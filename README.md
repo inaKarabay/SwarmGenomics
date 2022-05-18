@@ -1,4 +1,9 @@
 # SwarmGenomics
+------------------------------------
+Pipeline to analyze the Runs of Homozygosity (RoH) and Demographic History (PSMC) of an individual. 
+------------------------------------
+
+![Graph_Pipeline]([https://your-copied-image-address](https://github.com/inaKarabay/SwarmGenomics/blob/main/graph_pipeline.png?raw=true))
 
 pipeline.sh: bash script with used commands to do RoH calculation and PSMC analysis
 
